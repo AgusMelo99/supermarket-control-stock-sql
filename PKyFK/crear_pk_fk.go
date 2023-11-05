@@ -6,7 +6,7 @@ import (
 	_"github.com/lib/pq"
 	"log"
 )
-func createPK(){
+func CreatePK(){
 	db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
     if err != nil {
         log.Fatal(err)
@@ -25,7 +25,8 @@ alter table envio_email add constraint envio_email_pk primary key (id_email);`)
     if err != nil {
         log.Fatal(err)
     }
-    func createFK(){
+
+func CreateFK(){
 	db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
     if err != nil {
         log.Fatal(err)
