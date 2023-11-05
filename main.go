@@ -6,6 +6,8 @@ import (
 	_"github.com/lib/pq"
 //	"log"
 	database "trabajo-practico-base-de-datos/BD"
+	pk_fk	 "trabajo-practico-base-de-datos/PKyFK"
+	tables	 "trabajo-practico-base-de-datos/TABLES"
 	
 )
 
