@@ -1,4 +1,4 @@
-package main
+package PKyFK
 
 import (
 	"database/sql"
