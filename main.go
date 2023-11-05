@@ -31,6 +31,10 @@ func continuar (opcion int){
 				fmt.Println("Elegiste la opcion 3, se crearan las PK's y FK's correspondientes \n")
 				pk_fk.CreatePK()
 				pk_fk.CreateFK()
+			} else if opcion == 4 {
+				fmt.Println("Elegiste la opcion 4, se eliminaran las PK's y FK's correspondientes \n")
+				pk_fk.BorrarFK()
+				pk_fk.BorrarPK()
 			}
 	}
 

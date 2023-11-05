@@ -32,7 +32,6 @@ func CreateFK(){
 	db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
     if err != nil {
         log.Fatal(err)
-        fmt.Println(err)
     }
     defer db.Close()
     
@@ -42,7 +41,6 @@ func CreateFK(){
 					alter table reposicion add constraint reposicion_id_producto_fk foreign key (id_producto) references producto(id_producto);`)
     if err != nil {
         log.Fatal(err)
-        fmt.Println(err)
     }
     fmt.Println("FK's creadas exitosamente \n")
 }
