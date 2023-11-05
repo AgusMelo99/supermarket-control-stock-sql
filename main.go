@@ -6,7 +6,7 @@ import (
 	_"github.com/lib/pq"
 //	"log"
 	database "trabajo-practico-base-de-datos/BD"
-//	pk_fk	 "trabajo-practico-base-de-datos/PKyFK"
+	pk_fk	 "trabajo-practico-base-de-datos/PKyFK"
 	tables	 "trabajo-practico-base-de-datos/TABLES"
 	
 )
@@ -24,10 +24,14 @@ func continuar (opcion int){
 	if opcion == 1 {
 		fmt.Println("Elegiste la opcion 1, crear base de datos \n")
 		database.CreateDatabase()
-		} else if opcion == 2 {
-		fmt.Println("Elegiste la opcion 2, se crearan las tablas correspondientes \n")
-		tables.Create_tables()
-		}
+			} else if opcion == 2 {
+				fmt.Println("Elegiste la opcion 2, se crearan las tablas correspondientes \n")
+				tables.Create_tables()
+			} else if opcion == 3 {
+				fmt.Println("Elegiste la opcion 3, se crearan las PK's y FK's correspondientes \n")
+				pk_fk.CreatePK()
+				pk_fk.CreateFK()
+			}
 	}
 
 func main() {
