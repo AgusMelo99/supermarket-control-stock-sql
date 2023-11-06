@@ -34,7 +34,7 @@ begin
 		return false;
 	end if;
 	
-	-- insertar el pedido (agregar la fecha y hora)
+	-- insertar pedido
 	insert into pedido (id_usuario, id_direccion_entrega, fecha_y_hora_pedido, costo_envio, estado) values (id_cliente, id_direccion, current_date, tarifa, 'ingresado');
 	
 	return true;

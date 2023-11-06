@@ -1,4 +1,4 @@
-package stored_procedures
+package storedProcedures
 
 import (
 	"database/sql"
@@ -43,7 +43,7 @@ func Agregado_de_producto() {
     // llamar al stored procedure que agrega el producto
     var result bool
     
-    // falta agregar aca como tomar el id del cliente y de la direccion
+    // falta agregar aca como tomar el id del pedido, producto y cantidad
     err = db.QueryRow("select agregado_de_producto(%v, %v, %v), id_pedido, id_producto, cantidad_producto").Scan(%result)
     
     if err != nil {
