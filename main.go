@@ -38,8 +38,9 @@ func continuar (opcion int){
 				pk_fk.BorrarFK()
 				pk_fk.BorrarPK()
 			} else if opcion == 5 {
-				fmt.Println("solo hecho creacion del pedido")
+				fmt.Println("solo hecho creacion del pedido y agregado de producto")
 				stored_procedures.Creacion_del_pedido()
+				stored_procedures.Agregado_de_producto()
 			} else if opcion == 6 {
 				fmt.Println("Elegiste la opcion 6, se unmarshalearan los JSON's y se subiran los datos a las tablas \n")
 				datos.Unmalvaviscador()

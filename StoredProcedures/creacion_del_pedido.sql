@@ -16,7 +16,7 @@ begin
 	
 	-- verificar si la direccion de entrega existe
 	if not exists (select 1 from direccion_entrega where id_direccion_entrega = id_direccion) then
-		raise 'direccion de entrega invalida.';
+		raise 'id de direccion no valido.';
 		
 		return false;
 	end if;
@@ -35,7 +35,7 @@ begin
 	end if;
 	
 	-- insertar el pedido (agregar la fecha y hora)
-	insert into pedido (id_usuario, id_direccion_entrega, fecha_y_hora_pedido, costo_envio, estado) values (id_cliente, id_direccion, null, tarifa, ;ingresado');
+	insert into pedido (id_usuario, id_direccion_entrega, fecha_y_hora_pedido, costo_envio, estado) values (id_cliente, id_direccion, current_date, tarifa, 'ingresado');
 	
 	return true;
 
