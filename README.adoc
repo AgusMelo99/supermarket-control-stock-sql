@@ -8,10 +8,8 @@ v1, {docdate}. Docentes Daniel Bertaccini y Hernán Rondelli (COM-02)
 
 == Introducción
 
-En este trabajo se busca desarrollar un sistema digital capaz de administrar el ingreso, la cancelación, y la entrega de pedidos, mantener
-toda la información de les clientes y de los productos, y controlar que el stock disponible y el reservado de los productos sea actualizado 
-correctamente. Les clientes deben ser informados vía email cuando ocurran eventos importantes sobre sus pedidos. Además, es necesario poder generar 
-solicitudes de reposición para aquellos productos que hayan quedado con bajo stock.
+El propósito de este trabajo práctico se basa en el desarrollo de un sistema digital, destinado al supermercado ChangoOnline, el cual sea capaz de administrar el ingreso, la cancelación, y la entrega de pedidos.
+Además, se busca conservar toda la información de les clientes registrados y de los productos disponibles. Por último, se deberá controlar el stock de los productos y mantener a les clientes informados frente al estado de sus pedidos online.
 
 == Descripción
 // aca van las dificultades q tuvimos
