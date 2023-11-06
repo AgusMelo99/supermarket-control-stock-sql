@@ -8,7 +8,7 @@ import (
 	database "trabajo-practico-base-de-datos/BD"
 	pk_fk	 "trabajo-practico-base-de-datos/PKyFK"
 	tables	 "trabajo-practico-base-de-datos/TABLES"
-	
+	datos	 "trabajo-practico-base-de-datos/JSONs"
 )
 
 func printMenu() {
@@ -17,6 +17,7 @@ func printMenu() {
 	fmt.Println("3. Aniadir PK's y FK's \n")
 	fmt.Println("4. Eliminar PK's y FK's \n")
 	fmt.Println("5. Agregar SP's y Triggers \n")
+	fmt.Println("6. Unmarshalear JSON's y subir los datos \n")
 	fmt.Println("0. Cerrar sesion\n")
 	}
 
@@ -35,6 +36,11 @@ func continuar (opcion int){
 				fmt.Println("Elegiste la opcion 4, se eliminaran las PK's y FK's correspondientes \n")
 				pk_fk.BorrarFK()
 				pk_fk.BorrarPK()
+			} else if opcion == 5 {
+				fmt.Println("falta hacer")
+			} else if opcion == 6 {
+				fmt.Println("Elegiste la opcion 6, se unmarshalearan los JSON's y se subiran los datos a las tablas \n")
+				datos.Unmalvaviscador()
 			}
 	}
 
