@@ -1,4 +1,4 @@
-package storedProcedures // fixme
+package stored_procedures
 
 import (
 	"database/sql"
@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func Creacion_del_pedido() { // los nombres de funciones en Go es tipo CreacionDelPedido()
+func CreacionDelPedido() {
 	
 	db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
     if err != nil {
@@ -33,7 +33,7 @@ func Creacion_del_pedido() { // los nombres de funciones en Go es tipo CreacionD
 	}
 }
 
-func Agregado_de_producto() {
+func AgregadoDeProducto() {
 	
 	db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
     if err != nil {

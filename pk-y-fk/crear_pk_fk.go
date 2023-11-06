@@ -1,4 +1,4 @@
-package PKyFK
+package pk_y_fk
 
 import (
 	"database/sql"

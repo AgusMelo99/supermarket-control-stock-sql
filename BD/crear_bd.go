@@ -1,4 +1,4 @@
-package BD // los nombres de paquetes van en minúsculas
+package bd
 
 import (
 	"database/sql"

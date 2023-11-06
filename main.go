@@ -9,7 +9,7 @@ import (
 	pk_fk	 			"trabajo-practico-base-de-datos/PKyFK"
 	tables	 			"trabajo-practico-base-de-datos/TABLES"
 	datos	 			"trabajo-practico-base-de-datos/JSONs"
-	stored_procedures	"trabajo-practico-base-de-datos/StoredProcedures"
+	sp					"trabajo-practico-base-de-datos/StoredProcedures"
 )
 
 func printMenu() {
@@ -28,7 +28,7 @@ func continuar (opcion int){
 		database.CreateDatabase()
 			} else if opcion == 2 {
 				fmt.Println("Elegiste la opcion 2, se crearan las tablas correspondientes \n")
-				tables.Create_tables()
+				tables.CreateTables()
 			} else if opcion == 3 {
 				fmt.Println("Elegiste la opcion 3, se crearan las PK's y FK's correspondientes \n")
 				pk_fk.CreatePK()
@@ -38,9 +38,9 @@ func continuar (opcion int){
 				pk_fk.BorrarFK()
 				pk_fk.BorrarPK()
 			} else if opcion == 5 {
-				fmt.Println("solo hecho creacion del pedido y agregado de producto")
-				stored_procedures.Creacion_del_pedido()
-				stored_procedures.Agregado_de_producto()
+				fmt.Println("Elegiste la opcion 5, solo hecho creacion del pedido y agregado de producto")
+				sp.CreacionDelPedido()
+				sp.AgregadoDeProducto()
 			} else if opcion == 6 {
 				fmt.Println("Elegiste la opcion 6, se unmarshalearan los JSON's y se subiran los datos a las tablas \n")
 				datos.Unmalvaviscador()
