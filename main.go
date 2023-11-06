@@ -5,10 +5,11 @@ import (
 	"fmt"
 	_"github.com/lib/pq"
 //	"log"
-	database "trabajo-practico-base-de-datos/BD"
-	pk_fk	 "trabajo-practico-base-de-datos/PKyFK"
-	tables	 "trabajo-practico-base-de-datos/TABLES"
-	datos	 "trabajo-practico-base-de-datos/JSONs"
+	database 			"trabajo-practico-base-de-datos/BD"
+	pk_fk	 			"trabajo-practico-base-de-datos/PKyFK"
+	tables	 			"trabajo-practico-base-de-datos/TABLES"
+	datos	 			"trabajo-practico-base-de-datos/JSONs"
+	stored_procedures	"trabajo-practico-base-de-datos/StoredProcedures"
 )
 
 func printMenu() {
@@ -37,7 +38,8 @@ func continuar (opcion int){
 				pk_fk.BorrarFK()
 				pk_fk.BorrarPK()
 			} else if opcion == 5 {
-				fmt.Println("falta hacer")
+				fmt.Println("solo hecho creacion del pedido")
+				stored_procedures.Creacion_del_pedido()
 			} else if opcion == 6 {
 				fmt.Println("Elegiste la opcion 6, se unmarshalearan los JSON's y se subiran los datos a las tablas \n")
 				datos.Unmalvaviscador()
