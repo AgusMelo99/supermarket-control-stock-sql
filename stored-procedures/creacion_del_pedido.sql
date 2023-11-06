@@ -28,7 +28,7 @@ begin
 	select costo into tarifa from tarifa_entrega where codigo_postal_corto = cp_corto;
 	
 	-- verificar si la tarifa es valida
-	if tarifa is null the
+	if tarifa is null then
 		raise 'direccion de entrega fuera del area de atencion';
 		
 		return false;
