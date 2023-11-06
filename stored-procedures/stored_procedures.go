@@ -20,7 +20,7 @@ func CreacionDelPedido() {
     
     // llamar al stored procedure que crea el pedido
     // falta agregar aca como tomar el id del cliente y de la direccion
-    err = db.QueryRow("select creacion_del_pedido(%v, %v), id_cliente, id_direccion").Scan(%result)
+    err = db.QueryRow("select creacion_del_pedido(%v, %v), id_cliente, id_direccion").Scan(&result)
     
     if err != nil {
 		fmt.Println("Error", err)
@@ -46,7 +46,7 @@ func AgregadoDeProducto() {
     
     // llamar al stored procedure que agrega el producto
     // falta agregar aca como tomar el id del pedido, producto y cantidad
-    err = db.QueryRow("select agregado_de_producto(%v, %v, %v), id_pedido, id_producto, cantidad_producto").Scan(%result)
+    err = db.QueryRow("select agregado_de_producto(%v, %v, %v), id_pedido, id_producto, cantidad_producto").Scan(&result)
     
     if err != nil {
 		fmt.Println("Error", err)
