@@ -1,4 +1,4 @@
-package pk_y_fk
+package keys
 
 import (
 	"database/sql"
