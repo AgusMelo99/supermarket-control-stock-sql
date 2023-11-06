@@ -34,7 +34,7 @@ begin
 		return false;
 	end if;
 	
-	-- insertar pedido
+	-- insertar pedido si todos los datos son correctos
 	insert into pedido (id_usuario, id_direccion_entrega, fecha_y_hora_pedido, costo_envio, estado) values (id_cliente, id_direccion, current_date, tarifa, 'ingresado');
 	
 	return true;
