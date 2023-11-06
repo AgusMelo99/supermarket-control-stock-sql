@@ -1,4 +1,4 @@
-package storedProcedures
+package storedProcedures // fixme
 
 import (
 	"database/sql"
@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func Creacion_del_pedido() {
+func Creacion_del_pedido() { // los nombres de funciones en Go es tipo CreacionDelPedido()
 	
 	db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
     if err != nil {

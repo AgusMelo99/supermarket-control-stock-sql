@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func Create_tables(){
+func Create_tables(){ // fixme
 	db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
     if err != nil {
         log.Fatal(err)
