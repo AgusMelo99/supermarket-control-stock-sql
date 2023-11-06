@@ -9,7 +9,7 @@ import (
 	pk_fk	 			"trabajo-practico-base-de-datos/keys"
 	tables	 			"trabajo-practico-base-de-datos/TABLES"
 	datos	 			"trabajo-practico-base-de-datos/JSONs"
-	sp					"trabajo-practico-base-de-datos/StoredProcedures"
+	sp					"trabajo-practico-base-de-datos/stored-procedures"
 )
 
 func printMenu() {
