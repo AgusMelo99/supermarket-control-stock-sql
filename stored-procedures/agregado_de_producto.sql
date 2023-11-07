@@ -59,3 +59,7 @@ begin
 	
 	-- paso 3: actualizar el monto total del pedido
 	update pedidio set monto_total = (monto_total + (precio_unitario_producto * cantidad_producto));
+
+end;
+
+$$ language plpgsql;
