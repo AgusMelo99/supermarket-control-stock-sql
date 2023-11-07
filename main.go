@@ -38,9 +38,11 @@ func continuar (opcion int){
 				pk_fk.BorrarFK()
 				pk_fk.BorrarPK()
 			} else if opcion == 5 {
-				fmt.Println("Elegiste la opcion 5, solo hecho creacion del pedido y agregado de producto")
+				fmt.Println("Elegiste la opcion 5, creacion del pedido, agregado de producto y envio de mails")
 				sp.CreacionDelPedido()
 				sp.AgregadoDeProducto()
+				// esto va al final
+				sp.EnvioDeMail()
 			} else if opcion == 6 {
 				fmt.Println("Elegiste la opcion 6, se unmarshalearan los JSON's y se subiran los datos a las tablas \n")
 				datos.Unmalvaviscador()
