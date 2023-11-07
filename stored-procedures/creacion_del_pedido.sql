@@ -3,7 +3,7 @@ create or replace function creacion_del_pedido (id_cliente int, id_direccion int
 declare
 
 	tarifa int;
-	cp_corto var(4);
+	cp_corto char(4);
 	
 begin
 
@@ -28,7 +28,7 @@ begin
 	select costo into tarifa from tarifa_entrega where codigo_postal_corto = cp_corto;
 	
 	-- verificar si la tarifa es valida
-	if tarifa is null the
+	if tarifa is null then
 		raise 'direccion de entrega fuera del area de atencion';
 		
 		return false;
