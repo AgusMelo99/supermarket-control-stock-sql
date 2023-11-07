@@ -46,7 +46,7 @@ begin
 	select precio_unitario into precio_unitario_producto from producto p where p.id_producto = producto_id;
 	
 	-- verificar si el producto ya esta en el pedido
-	if producto_id not in (select id_producto from pedido_detalle)
+	if producto_id not in (select id_producto from pedido_detalle) then
 		-- paso 1: insertar el producto en pedido_detalle si no existe
 		insert into pedido_detalle values (pedido_id, producto_id, cantidad_producto, precio_unitario_producto);
 	else
