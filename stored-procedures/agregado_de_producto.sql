@@ -1,4 +1,4 @@
-create or replace function agregado_de_producto (pedido_id int, producto_id int, cantidad_producto int) return boolean as $$
+create or replace function agregado_de_producto (pedido_id int, producto_id int, cantidad_producto int) returns boolean as $$
 
 declare
 	
@@ -35,7 +35,7 @@ begin
 	select stock_disponible into stock_producto from producto p where p.id_producto = producto_id;
 	
 	if cantidad_producto > stock_producto then
-		raise ('stock no disponible para el producto %v', producto_id);
+		raise 'stock no disponible para el producto %', producto_id;
 		
 		return false;
 	end if;
@@ -46,7 +46,7 @@ begin
 	select precio_unitario into precio_unitario_producto from producto p where p.id_producto = producto_id;
 	
 	-- verificar si el producto ya esta en el pedido
-	if producto_id not in (select id_producto from pedido_detalle) then
+	if not exists (select 1 from pedido_detalle p where p.id_producto = producto_id) then 
 		-- paso 1: insertar el producto en pedido_detalle si no existe
 		insert into pedido_detalle values (pedido_id, producto_id, cantidad_producto, precio_unitario_producto);
 	else
@@ -60,6 +60,7 @@ begin
 	-- paso 3: actualizar el monto total del pedido
 	update pedidio set monto_total = (monto_total + (precio_unitario_producto * cantidad_producto));
 
+	return true;
 end;
 
 $$ language plpgsql;
