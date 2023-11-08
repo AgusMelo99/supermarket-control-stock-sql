@@ -10,6 +10,8 @@ begin
 
 	-- verificar si existe el pedido
 	if not exists (select 1 from pedido p where p.id_pedido = pedido_id) then
+		insert into error(id_error, id_pedido, f_error, motivo)
+			values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?id de pedido no valido'); 
 		raise 'id de pedido no valido.';
 		
 		return false;
@@ -19,6 +21,8 @@ begin
 	select estado into estado_pedido from pedido p where p.id_pedido = pedido_id;
 	
 	if estado_pedido != 'ingresado' then
+		insert into error(id_error, id_pedido, f_error, motivo)
+			values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?pedido cerrado'); 
 		raise 'pedido cerrado';
 		
 		return false;
@@ -26,6 +30,8 @@ begin
 	
 	-- verificar que el producto exista
 	if not exists (select 1 from producto p where p.id_producto = producto_id) then
+		insert into error(id_error, id_pedido, f_error, motivo)
+			values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?id de producto no valido'); 
 		raise 'id de producto no valido';
 		
 		return false;
@@ -35,8 +41,9 @@ begin
 	select stock_disponible into stock_producto from producto p where p.id_producto = producto_id;
 	
 	if cantidad_producto > stock_producto then
+		insert into error(id_error, id_pedido, f_error, motivo)
+			values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?stock no disponible para el producto ' || producto_id)); 
 		raise 'stock no disponible para el producto %', producto_id;
-		
 		return false;
 	end if;
 	

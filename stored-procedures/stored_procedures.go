@@ -12,7 +12,7 @@ func SubirSPyTriggers(){
 	subirSPyTriggers("stored-procedures/creacion_del_pedido.sql")
 	
 	subirSPyTriggers("stored-procedures/agregado_de_producto.sql")
-	fmt.Println("llego")
+	
 	subirSPyTriggers("stored-procedures/enviar_mail.sql")
     
 	subirSPyTriggers("stored-procedures/enviar_mail_trigger.sql")
@@ -36,7 +36,7 @@ func subirSPyTriggers(localizacion string) {
 	contenidoSqlEnString := string(contenidoSql)
     _, err = db.Exec(contenidoSqlEnString)
     if err != nil {
-        fmt.Printf("Error al ejecutar el archivo %v, \n %v", localizacion, err)
+        fmt.Printf("Error al ejecutar el sp/trigger %v, \n %v", localizacion, err)
         log.Fatal()
     }
 }
