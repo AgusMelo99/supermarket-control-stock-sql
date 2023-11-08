@@ -11,8 +11,9 @@ import (
 func SubirSPyTriggers(){
 	subirSPyTriggers("stored-procedures/creacion_del_pedido.sql")
 
-    
 	subirSPyTriggers("stored-procedures/agregado_de_producto.sql")
+	
+	subirSPyTriggers("stored-procedures/enviar_mail.sql")
     
 	subirSPyTriggers("stored-procedures/enviar_mail_trigger.sql")
 }
