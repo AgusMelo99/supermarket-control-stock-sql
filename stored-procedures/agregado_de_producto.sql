@@ -42,7 +42,7 @@ begin
 	
 	if cantidad_producto > stock_producto then
 		insert into error(id_error, id_pedido, f_error, motivo)
-			values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?stock no disponible para el producto ' || producto_id)); 
+			values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?stock no disponible para el producto' || ' ' || producto_id);  
 		raise 'stock no disponible para el producto %', producto_id;
 		return false;
 	end if;
