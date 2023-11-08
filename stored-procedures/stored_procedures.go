@@ -12,7 +12,7 @@ func SubirSPyTriggers(){
 	subirSPyTriggers("stored-procedures/creacion_del_pedido.sql")
 	
 	subirSPyTriggers("stored-procedures/agregado_de_producto.sql")
-fmt.Println("llego")
+	fmt.Println("llego")
 	subirSPyTriggers("stored-procedures/enviar_mail.sql")
     
 	subirSPyTriggers("stored-procedures/enviar_mail_trigger.sql")
@@ -28,14 +28,16 @@ func subirSPyTriggers(localizacion string) {
     //lee el contenido del archivo sql y lo guarda en el tipo de datos []byte
     contenidoSql, err := ioutil.ReadFile(localizacion)
     if err != nil {
-        log.Fatal(err)
+        fmt.Printf("Error al leer el archivo %v, \n %v", localizacion, err)
+        log.Fatal()
     }
     
 	//Convierte el contenido del archivo .sql en un string para despues ser ejecutado
 	contenidoSqlEnString := string(contenidoSql)
     _, err = db.Exec(contenidoSqlEnString)
     if err != nil {
-        log.Fatal(err)
+        fmt.Printf("Error al ejecutar el archivo %v, \n %v", localizacion, err)
+        log.Fatal()
     }
 }
 

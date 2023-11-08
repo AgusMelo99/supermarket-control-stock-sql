@@ -52,6 +52,7 @@ begin
 	else
 		-- si existe, actualizar la cantidad
 		update pedido_detalle set cantidad = (cantidad + cantidad_producto);
+	end if;
 	
 	-- paso 2: descontar el stock disponible y agregarlo al stock reservado
 	update producto set stock_disponible = (stock_disponible - cantidad_producto);
