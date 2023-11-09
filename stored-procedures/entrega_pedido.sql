@@ -18,7 +18,7 @@ begin
 	end if;
 	
 	--consulta el estado actual del pedido.
-	select estado_pedido into estado_actual from pedido p where p.id_pedido = pedido_id;
+	select estado into estado_pedido from pedido p where p.id_pedido = pedido_id;
 	
 	-- valida si el pedido ya se encuentra en estado completado.
 	if estado_pedido != 'completado' then
