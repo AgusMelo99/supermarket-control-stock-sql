@@ -33,16 +33,16 @@ begin
 				'Precio por unidad: ' || precio_unitario || '\n' ||
 				'Precio total: ' || this_pedido.monto_total || '\n';
 				
-		insert into envio_mail values (1, current_timestamp, email_del_cliente, 'Pedido aceptado', cuerpo, current_timestamp, 'enviado');
+		insert into envio_email values (1, current_timestamp, email_del_cliente, 'Pedido aceptado', cuerpo, current_timestamp, 'enviado');
 		
 	elsif estado_pedido = 'cancelado' then
-		insert into envio_mail values (1, current_timestamp, email_del_cliente, 'Pedido cancelado', 'cuerpo', current_timestamp, 'cancelado');
+		insert into envio_email values (1, current_timestamp, email_del_cliente, 'Pedido cancelado', 'cuerpo', current_timestamp, 'cancelado');
 			
 	elsif estado_pedido = 'entregado' then
-		insert into envio_mail values (1, current_timestamp, email_del_cliente, 'Pedido entregado', 'cuerpo', current_timestamp, 'entregado');
+		insert into envio_email values (1, current_timestamp, email_del_cliente, 'Pedido entregado', 'cuerpo', current_timestamp, 'entregado');
 			-- el segundo current_timestamp deberia ser la fecha del dia siguiente.
 			-- falta validar que la fecha actual current_timestamp sea igual al registro de la fecha siguiente para updatear el estado del envio a "enviado"
-		insert into envio_mail values (1, current_timestamp, email_del_cliente, 'encuesta', 'cuerpo', (current_timestamp + interval '1 day'), 'pendiente');
+		insert into envio_email values (1, current_timestamp, email_del_cliente, 'encuesta', 'cuerpo', (current_timestamp + interval '1 day'), 'pendiente');
 	end if;
 
 	return new;
