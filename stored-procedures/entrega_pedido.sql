@@ -40,6 +40,8 @@ begin
 	-- actualiza la tabla producto restando al stock_reservado la cantidad del pedido entregado.
 		update producto set stock_reservado = (stock_reservado - registro.cantidad) where id_producto = registro.id_producto;
 	end loop
+	
+	return true;
 end;
 
 $$ language plpgsql;
