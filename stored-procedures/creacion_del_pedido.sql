@@ -1,3 +1,5 @@
+-- \i archivo_de_prueba.sql
+
 create or replace function creacion_del_pedido (id_cliente int, id_direccion int) returns boolean as $$
 
 declare

@@ -5,20 +5,21 @@ import (
 	"fmt"
 	_"github.com/lib/pq"
 //	"log"
-	database 			"trabajo-practico-base-de-datos/BD"
+	database 			"trabajo-practico-base-de-datos/bd"
 	pk_fk	 			"trabajo-practico-base-de-datos/keys"
-	tables	 			"trabajo-practico-base-de-datos/TABLES"
-	datos	 			"trabajo-practico-base-de-datos/JSONs"
+	tables	 			"trabajo-practico-base-de-datos/tables"
+	datos	 			"trabajo-practico-base-de-datos/jsons"
 	sp					"trabajo-practico-base-de-datos/stored-procedures"
 )
 
 func printMenu() {
 	fmt.Println("1. Crear base de datos \n")
 	fmt.Println("2. Crear Tablas \n")
-	fmt.Println("3. Aniadir PK's y FK's \n")
+	fmt.Println("3. Agregar PK's y FK's \n")
 	fmt.Println("4. Eliminar PK's y FK's \n")
 	fmt.Println("5. Agregar SP's y Triggers \n")
-	fmt.Println("6. Unmarshalear JSON's y subir los datos \n")
+	fmt.Println("6. Unmarshalear JSON's y cargar los datos \n")
+	// cargar pedidos de prueba
 	fmt.Println("0. Cerrar sesion\n")
 	}
 

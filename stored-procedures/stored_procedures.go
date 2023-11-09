@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 )
 
-func SubirSPyTriggers(){
+func SubirSPyTriggers(){ // fixme 
 	subirSPyTriggers("stored-procedures/creacion_del_pedido.sql")
 	
 	subirSPyTriggers("stored-procedures/agregado_de_producto.sql")

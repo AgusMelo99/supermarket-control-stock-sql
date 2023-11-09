@@ -1,4 +1,4 @@
-package JSONs
+package json // datajson
 
 import (
     "encoding/json"
