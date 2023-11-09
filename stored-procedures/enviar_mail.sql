@@ -41,7 +41,8 @@ begin
 	elsif estado_pedido = 'entregado' then
 		insert into envio_mail values (1, current_timestamp, email_del_cliente, 'Pedido entregado', 'cuerpo', current_timestamp, 'entregado');
 			-- el segundo current_timestamp deberia ser la fecha del dia siguiente.
-		insert into envio_mail values (1, current_timestamp, email_del_cliente, 'encuesta', 'cuerpo', current_timestamp, 'pendiente');
+			-- falta validar que la fecha actual current_timestamp sea igual al registro de la fecha siguiente para updatear el estado del envio a "enviado"
+		insert into envio_mail values (1, current_timestamp, email_del_cliente, 'encuesta', 'cuerpo', (current_timestamp + interval '1 day'), 'pendiente');
 	end if;
 
 	return new;
