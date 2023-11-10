@@ -36,25 +36,25 @@ begin
 		
 		return false;
 	end if;
-	
-	-- verificar si hay stock del producto
-	select stock_disponible into stock_producto from producto p where p.id_producto = producto_id;
-	
-	if cantidad_producto > stock_producto then
-		insert into error(id_error, id_pedido, f_error, motivo)
-			values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?stock no disponible para el producto' || ' ' || producto_id);  
-		raise 'stock no disponible para el producto %', producto_id;
-		return false;
-	end if;
-	
-	-- si llego hasta aca es porque se puede agregar el producto
-	
-	-- obtener el precio unitario del producto
-	select precio_unitario into precio_unitario_producto from producto p where p.id_producto = producto_id;
-	
-	--inicializo la transaccion
+
+	--inicializo la transaccion aca porque ya empieza a tocar cosas de los productos
 	begin
 		set transaction isolation level serializable;
+		-- verificar si hay stock del producto
+		select stock_disponible into stock_producto from producto p where p.id_producto = producto_id;
+		
+		if cantidad_producto > stock_producto then
+			insert into error(id_error, id_pedido, f_error, motivo)
+				values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?stock no disponible para el producto' || ' ' || producto_id);  
+			raise 'stock no disponible para el producto %', producto_id;
+			return false;
+		end if;
+		
+		-- si llego hasta aca es porque se puede agregar el producto
+		
+		-- obtener el precio unitario del producto
+		select precio_unitario into precio_unitario_producto from producto p where p.id_producto = producto_id;
+	
 		-- verificar si el producto ya esta en el pedido
 		if not exists (select 1 from pedido_detalle p where p.id_producto = producto_id) then 
 			-- paso 1: insertar el producto en pedido_detalle si no existe
