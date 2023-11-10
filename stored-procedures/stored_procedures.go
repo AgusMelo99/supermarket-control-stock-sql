@@ -18,6 +18,8 @@ func SubirSPyTriggers(){ // fixme
 	subirSPyTriggers("stored-procedures/enviar_mail_trigger.sql")
 	
 	subirSPyTriggers("stored-procedures/entrega_pedido.sql")
+	
+	subirSPyTriggers("stored-procedures/cierre_del_pedido.sql")
 }
 
 func subirSPyTriggers(localizacion string) {
