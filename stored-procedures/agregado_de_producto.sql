@@ -52,23 +52,33 @@ begin
 	-- obtener el precio unitario del producto
 	select precio_unitario into precio_unitario_producto from producto p where p.id_producto = producto_id;
 	
-	-- verificar si el producto ya esta en el pedido
-	if not exists (select 1 from pedido_detalle p where p.id_producto = producto_id) then 
-		-- paso 1: insertar el producto en pedido_detalle si no existe
-		insert into pedido_detalle values (pedido_id, producto_id, cantidad_producto, precio_unitario_producto);
-	else
-		-- si existe, actualizar la cantidad
-		update pedido_detalle set cantidad = (cantidad + cantidad_producto) where id_pedido = pedido_id and id_producto = producto_id;
-	end if;
-	
-	-- paso 2: descontar el stock disponible y agregarlo al stock reservado
-	update producto set stock_disponible = (stock_disponible - cantidad_producto) where id_producto = producto_id;
-	update producto set stock_reservado = (stock_reservado + cantidad_producto) where id_producto = producto_id;
-	
-	-- paso 3: actualizar el monto total del pedido
-	update pedido set monto_total = (monto_total + (precio_unitario_producto * cantidad_producto)) where id_pedido = pedido_id;
-
-	return true;
+	--inicializo la transaccion
+	begin
+		set transaction isolation level serializable;
+		-- verificar si el producto ya esta en el pedido
+		if not exists (select 1 from pedido_detalle p where p.id_producto = producto_id) then 
+			-- paso 1: insertar el producto en pedido_detalle si no existe
+			insert into pedido_detalle values (pedido_id, producto_id, cantidad_producto, precio_unitario_producto);
+		else
+			-- si existe, actualizar la cantidad
+			update pedido_detalle set cantidad = (cantidad + cantidad_producto) where id_pedido = pedido_id and id_producto = producto_id;
+		end if;
+		
+		-- paso 2: descontar el stock disponible y agregarlo al stock reservado
+		update producto set stock_disponible = (stock_disponible - cantidad_producto) where id_producto = producto_id;
+		update producto set stock_reservado = (stock_reservado + cantidad_producto) where id_producto = producto_id;
+		
+		-- paso 3: actualizar el monto total del pedido
+		update pedido set monto_total = (monto_total + (precio_unitario_producto * cantidad_producto)) where id_pedido = pedido_id;
+		commit;
+		return true;
+		
+		-- en caso de excepcion hago rollback y retorno false
+		exception
+			when others then
+				rollback;
+				return false;		
+	end;
 end;
 
 $$ language plpgsql;
