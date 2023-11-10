@@ -1,4 +1,4 @@
-package jsons // datajson
+package datajson // datajson
 
 import (
     "encoding/json"
@@ -108,7 +108,7 @@ func InsertarDireccionesEntrega(){
 func Unmalvaviscador(){
 	
 	//Unmarshall clientes.json
-	jsonFile, err := ioutil.ReadFile("jsons/clientes.json")
+	jsonFile, err := ioutil.ReadFile("datajson/clientes.json")
     if err != nil {
         log.Fatalf("Error al leer el archivo JSON: %s", err)
     }
@@ -123,7 +123,7 @@ func Unmalvaviscador(){
 	//fmt.Printf("%v\n", clientes)
 	
 	//Unmarshall direcciones.json
-	jsonFile, err = ioutil.ReadFile("jsons/direcciones.json")
+	jsonFile, err = ioutil.ReadFile("datajson/direcciones.json")
 	if err != nil {
         log.Fatalf("Error al leer el archivo JSON: %s", err)
     }
@@ -138,7 +138,7 @@ func Unmalvaviscador(){
 	//fmt.Printf("%v\n", direcciones)
     
     //Unmarshall productos.json
-    jsonFile, err = ioutil.ReadFile("jsons/productos.json")
+    jsonFile, err = ioutil.ReadFile("datajson/productos.json")
 	if err != nil {
         log.Fatalf("Error al leer el archivo JSON: %s", err)
     }
@@ -153,7 +153,7 @@ func Unmalvaviscador(){
 	//fmt.Printf("%v\n", productos)
 	
 	//Unmarshall tarifas_entrega.json
-	jsonFile, err = ioutil.ReadFile("jsons/tarifas_entrega.json")
+	jsonFile, err = ioutil.ReadFile("datajson/tarifas_entrega.json")
 	if err != nil {
         log.Fatalf("Error al leer el archivo JSON: %s", err)
     }

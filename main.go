@@ -8,7 +8,7 @@ import (
 	database 			"trabajo-practico-base-de-datos/bd"
 	pk_fk	 			"trabajo-practico-base-de-datos/keys"
 	tables	 			"trabajo-practico-base-de-datos/tables"
-	datos	 			"trabajo-practico-base-de-datos/jsons"
+	datos	 			"trabajo-practico-base-de-datos/datajson"
 	sp					"trabajo-practico-base-de-datos/stored-procedures"
 )
 
@@ -40,7 +40,7 @@ func continuar (opcion int){
 				pk_fk.BorrarPK()
 			} else if opcion == 5 {
 				fmt.Println("Elegiste la opcion 5, creacion del pedido, agregado de producto y envio de mails")
-				sp.SubirSPyTriggers()
+				sp.SubirStoredProceduresyTriggers()
 			} else if opcion == 6 {
 				fmt.Println("Elegiste la opcion 6, se unmarshalearan los JSON's y se subiran los datos a las tablas \n")
 				datos.Unmalvaviscador()

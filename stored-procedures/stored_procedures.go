@@ -8,21 +8,23 @@ import (
 	"io/ioutil"
 )
 
-func SubirSPyTriggers(){ // fixme 
-	subirSPyTriggers("stored-procedures/creacion_del_pedido.sql")
+func SubirStoredProceduresyTriggers(){ 
+	subirStoredProceduresyTriggers("stored-procedures/creacion_del_pedido.sql")
 	
-	subirSPyTriggers("stored-procedures/agregado_de_producto.sql")
+	subirStoredProceduresyTriggers("stored-procedures/agregado_de_producto.sql")
 	
-	subirSPyTriggers("stored-procedures/enviar_mail.sql")
+	subirStoredProceduresyTriggers("stored-procedures/enviar_mail.sql")
     
-	subirSPyTriggers("stored-procedures/enviar_mail_trigger.sql")
+	subirStoredProceduresyTriggers("stored-procedures/enviar_mail_trigger.sql")
 	
-	subirSPyTriggers("stored-procedures/entrega_pedido.sql")
+	subirStoredProceduresyTriggers("stored-procedures/entrega_pedido.sql")
 	
-	subirSPyTriggers("stored-procedures/cierre_del_pedido.sql")
+	subirStoredProceduresyTriggers("stored-procedures/cierre_del_pedido.sql")
+	
+	subirStoredProceduresyTriggers("stored-procedures/cancelacion_de_pedido.sql")
 }
 
-func subirSPyTriggers(localizacion string) {
+func subirStoredProceduresyTriggers(localizacion string) {
 	db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
     if err != nil {
         log.Fatal(err)

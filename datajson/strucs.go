@@ -1,4 +1,4 @@
-package jsons
+package datajson
 
 type Cliente struct {
 	Id_usuarie	int
