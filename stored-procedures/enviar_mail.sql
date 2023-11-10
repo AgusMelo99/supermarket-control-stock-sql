@@ -36,13 +36,37 @@ begin
 		insert into envio_email values (1, current_timestamp, email_del_cliente, 'Pedido aceptado', cuerpo, current_timestamp, 'enviado');
 		
 	elsif estado_pedido = 'cancelado' then
-		insert into envio_email values (1, current_timestamp, email_del_cliente, 'Pedido cancelado', 'cuerpo', current_timestamp, 'cancelado');
+		cuerpo:= 'Te enviamos este mail para confirmarte que el pedido con el ID numero:' || ' ' || this_pedido.id || ' ' ||
+				'ha sido cancelado, a continuacion los detalles del mismo: \n' || ' ' ||
+				'ID: ' || this_pedido.id || '\n' ||
+				'Fecha del pedido: ' || this_pedido.f_pedido || '\n' ||
+				'Direccion de entrega: ' || direccion_de_entrega || '\n' ||
+				'Nombre del producto: ' || nombre_del_producto || '\n' ||
+				'Cantidad: ' || cantidad || '\n' ||
+				'Precio por unidad: ' || precio_unitario || '\n' ||
+				'Precio total: ' || this_pedido.monto_total || '\n';	
+					
+		insert into envio_email values (1, current_timestamp, email_del_cliente, 'Pedido cancelado', cuerpo, current_timestamp, 'cancelado');
 			
 	elsif estado_pedido = 'entregado' then
-		insert into envio_email values (1, current_timestamp, email_del_cliente, 'Pedido entregado', 'cuerpo', current_timestamp, 'entregado');
+		cuerpo:= 'Te enviamos este mail para confirmarte que el pedido con el ID numero:' || ' ' || this_pedido.id || ' ' ||
+				'ha sido entregado, a continuacion los detalles del mismo: \n' || ' ' ||
+				'ID: ' || this_pedido.id || '\n' ||
+				'Fecha del pedido: ' || this_pedido.f_pedido || '\n' ||
+				'Direccion de entrega: ' || direccion_de_entrega || '\n' ||
+				'Nombre del producto: ' || nombre_del_producto || '\n' ||
+				'Cantidad: ' || cantidad || '\n' ||
+				'Precio por unidad: ' || precio_unitario || '\n' ||
+				'Precio total: ' || this_pedido.monto_total || '\n';
+				
+		insert into envio_email values (1, current_timestamp, email_del_cliente, 'Pedido entregado', cuerpo, current_timestamp, 'entregado');
 			-- el segundo current_timestamp deberia ser la fecha del dia siguiente.
 			-- falta validar que la fecha actual current_timestamp sea igual al registro de la fecha siguiente para updatear el estado del envio a "enviado"
-		insert into envio_email values (1, current_timestamp, email_del_cliente, 'encuesta', 'cuerpo', (current_timestamp + interval '1 day'), 'pendiente');
+			
+		cuerpo:= 'Te esta encuesta del pedido:' || ' ' || this_pedido.id || ' ' ||
+				'para saber el nivel de satisfaccion durante el periodo de compra y envio\n';
+				
+		insert into envio_email values (1, current_timestamp, email_del_cliente, 'encuesta', cuerpo, (current_timestamp + interval '1 day'), 'pendiente');
 	end if;
 
 	return new;
