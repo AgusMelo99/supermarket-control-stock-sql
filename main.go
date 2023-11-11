@@ -17,7 +17,7 @@ func printMenu() {
 	fmt.Println("2. Crear Tablas \n")
 	fmt.Println("3. Agregar PK's y FK's \n")
 	fmt.Println("4. Eliminar PK's y FK's \n")
-	fmt.Println("5. Agregar SP's y Triggers \n")
+	fmt.Println("5. Agregar Stored Procedures y Triggers \n")
 	fmt.Println("6. Unmarshalear JSON's y cargar los datos \n")
 	// cargar pedidos de prueba
 	fmt.Println("0. Cerrar sesion\n")

@@ -13,15 +13,17 @@ func SubirStoredProceduresyTriggers(){
 	
 	subirStoredProceduresyTriggers("stored-procedures/agregado_de_producto.sql")
 	
-	subirStoredProceduresyTriggers("stored-procedures/enviar_mail.sql")
-    
-	subirStoredProceduresyTriggers("stored-procedures/enviar_mail_trigger.sql")
-	
-	subirStoredProceduresyTriggers("stored-procedures/entrega_pedido.sql")
-	
 	subirStoredProceduresyTriggers("stored-procedures/cierre_del_pedido.sql")
 	
 	subirStoredProceduresyTriggers("stored-procedures/cancelacion_de_pedido.sql")
+	
+	subirStoredProceduresyTriggers("stored-procedures/entrega_pedido.sql")
+	
+	subirStoredProceduresyTriggers("stored-procedures/generar_solicitud_reposicion.sql")
+	
+	subirStoredProceduresyTriggers("stored-procedures/enviar_mail.sql")
+    
+	subirStoredProceduresyTriggers("stored-procedures/enviar_mail_trigger.sql")
 }
 
 func subirStoredProceduresyTriggers(localizacion string) {
