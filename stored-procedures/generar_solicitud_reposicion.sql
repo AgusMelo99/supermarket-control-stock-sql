@@ -19,7 +19,7 @@ begin
 			cantidad_reposicion = registro.stock_maximo - (registro.stock_disponile + registro.stock_reservado);
 			
 			-- se inserta un nuevo registro de solicitud en la tabla reposicion
-			insert into reposicion (registro.id_producto, current_date, cantidad_reposicion, null, 'pendiente');
+			insert into reposicion values (registro.id_producto, current_date, cantidad_reposicion, null, 'pendiente');
 		end if;
 	end loop;
 	
