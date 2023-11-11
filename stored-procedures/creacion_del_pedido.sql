@@ -45,8 +45,8 @@ begin
 	end if;
 	
 	-- insertar pedido si todos los datos son correctos
-	insert into pedido (id_pedido, f_pedido, id_usuario, id_direccion_entrega, costo_envio, estado) 
-		values (coalesce((select max(id_pedido) from pedido), 0) + 1, current_timestamp, id_usuario, id_direccion, tarifa, 'ingresado');
+	insert into pedido (id_pedido, f_pedido, id_usuarie, id_direccion_entrega, costo_envio, estado) 
+		values (coalesce((select max(id_pedido) from pedido), 0) + 1, current_timestamp, id_cliente, id_direccion, tarifa, 'ingresado');
 	return true;
 end;
 
