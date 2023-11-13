@@ -1,4 +1,4 @@
-package create_table
+package bd
 
 import (
 	"database/sql"

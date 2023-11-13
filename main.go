@@ -6,8 +6,6 @@ import (
 	_"github.com/lib/pq"
 //	"log"
 	database 			"trabajo-practico-base-de-datos/bd"
-	pk_fk	 			"trabajo-practico-base-de-datos/keys"
-	tables	 			"trabajo-practico-base-de-datos/tables"
 	datos	 			"trabajo-practico-base-de-datos/datajson"
 	sp					"trabajo-practico-base-de-datos/stored-procedures"
 	ver					"trabajo-practico-base-de-datos/ver_tablas"
@@ -36,15 +34,15 @@ func continuar (opcion int){
 		database.CreateDatabase()
 			} else if opcion == 2 {
 				fmt.Println("Elegiste la opcion 2, se crearan las tablas correspondientes \n")
-				tables.CreateTables(db) // fixme
+				database.CreateTables() // fixme
 			} else if opcion == 3 {
 				fmt.Println("Elegiste la opcion 3, se crearan las PK's y FK's correspondientes \n")
-				pk_fk.CreatePK()
-				pk_fk.CreateFK()
+				database.CreatePK()
+				database.CreateFK()
 			} else if opcion == 4 {
 				fmt.Println("Elegiste la opcion 4, se eliminaran las PK's y FK's correspondientes \n")
-				pk_fk.BorrarFK()
-				pk_fk.BorrarPK()
+				database.BorrarFK()
+				database.BorrarPK()
 			} else if opcion == 5 {
 				fmt.Println("Elegiste la opcion 5, creacion del pedido, agregado de producto y envio de mails")
 				sp.SubirStoredProceduresyTriggers()
