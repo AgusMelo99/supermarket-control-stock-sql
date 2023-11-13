@@ -36,7 +36,7 @@ func continuar (opcion int){
 		database.CreateDatabase()
 			} else if opcion == 2 {
 				fmt.Println("Elegiste la opcion 2, se crearan las tablas correspondientes \n")
-				tables.CreateTables()
+				tables.CreateTables(db) // fixme
 			} else if opcion == 3 {
 				fmt.Println("Elegiste la opcion 3, se crearan las PK's y FK's correspondientes \n")
 				pk_fk.CreatePK()
@@ -80,6 +80,9 @@ func continuar (opcion int){
 	}
 
 func main() {
+	// db
+	// defer db.Close();
+
 	fmt.Println("Bienvenido a la base de datos de ChangoOnline!\n")
 	fmt.Println("Elija entre las siguientes opciones para continuar!\n")
 	var user int
