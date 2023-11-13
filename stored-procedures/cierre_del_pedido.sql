@@ -36,7 +36,7 @@ begin
 	-- despues de validar todo:
 	-- actualiza la fecha de entrega del pedido desde y hasta que hora puede llegar.
 	-- casteo la fecha de entrega a time para sacar la hora
-	select cast(fehca_entrega as time) into hora_entrega;
+	select cast(fecha_entrega as time) into hora_entrega;
 
 	update pedido set hora_entrega_desde = hora_entrega where id_pedido = pedido_id;
 	update pedido set hora_entrega_hasta = (hora_entrega + interval '2 hour') where id_pedido = pedido_id;	
