@@ -10,6 +10,7 @@ import (
 	tables	 			"trabajo-practico-base-de-datos/tables"
 	datos	 			"trabajo-practico-base-de-datos/datajson"
 	sp					"trabajo-practico-base-de-datos/stored-procedures"
+	ver					"trabajo-practico-base-de-datos/ver_tablas"
 )
 
 func printMenu() {
@@ -19,6 +20,12 @@ func printMenu() {
 	fmt.Println("4. Eliminar PK's y FK's \n")
 	fmt.Println("5. Agregar Stored Procedures y Triggers \n")
 	fmt.Println("6. Unmarshalear JSON's y cargar los datos \n")
+	fmt.Println("7. Ver clientes \n")
+	fmt.Println("8. Ver productos \n")
+	fmt.Println("9. Ver pedidos \n")
+	fmt.Println("10. Ver reposicion \n")
+	fmt.Println("11. Ver emails \n")
+	fmt.Println("12. Ver errores \n")
 	// cargar pedidos de prueba
 	fmt.Println("0. Cerrar sesion\n")
 	}
@@ -48,6 +55,27 @@ func continuar (opcion int){
 				datos.InsertarDireccionesEntrega()
 				datos.InsertarProductos()
 				datos.InsertarTarifaEntrega()
+			} else if opcion == 7 {
+				fmt.Println("Elegiste la opcion 7, a continuacion se mostrara el contenido de la tabla cliente\n")
+				ver.VerClientes()
+			} else if opcion == 8 {
+				fmt.Println("Elegiste la opcion 7, a continuacion se mostrara el contenido de la tabla producto\n")
+				ver.VerProductos()
+			} else if opcion == 9 {
+				fmt.Println("Elegiste la opcion 7, a continuacion se mostrara el contenido de la tabla pedido\n")
+				ver.VerPedidos()
+			} else if opcion == 10 {
+				fmt.Println("Elegiste la opcion 7, a continuacion se mostrara el contenido de la tabla pedido_detalle\n")
+				ver.VerPedidosDetalle()
+			} else if opcion == 11 {
+				fmt.Println("Elegiste la opcion 7, a continuacion se mostrara el contenido de la tabla reposicion\n")
+				ver.VerReposicion()
+			} else if opcion == 12 {
+				fmt.Println("Elegiste la opcion 7, a continuacion se mostrara el contenido de la tabla envio_email\n")
+				ver.VerEmails()
+			} else if opcion == 12 {
+				fmt.Println("Elegiste la opcion 7, a continuacion se mostrara el contenido de la tabla error\n")
+				ver.VerErrores()
 			}
 	}
 
