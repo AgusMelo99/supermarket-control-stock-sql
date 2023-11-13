@@ -1,8 +1,8 @@
-create or replace function cierre_del_pedido (pedido_id int, fecha_entrega timestamp, hora_entrega time) returns boolean as $$
+create or replace function cierre_del_pedido (pedido_id int, fecha_entrega timestamp) returns boolean as $$
 
 declare
 	cantidad_productos int;
-
+	hora_entrega time;
 begin
 
 	-- valida que el id del pedido exista en la tabla.
@@ -35,6 +35,9 @@ begin
 	
 	-- despues de validar todo:
 	-- actualiza la fecha de entrega del pedido desde y hasta que hora puede llegar.
+	-- casteo la fecha de entrega a time para sacar la hora
+	select into hora_entrega timestamp fecha_entrega::time;
+
 	update pedido set hora_entrega_desde = hora_entrega where id_pedido = pedido_id;
 	update pedido set hora_entrega_hasta = (hora_entrega + interval '2 hour') where id_pedido = pedido_id;	
 	
