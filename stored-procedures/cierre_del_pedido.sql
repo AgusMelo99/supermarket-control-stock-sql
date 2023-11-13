@@ -26,7 +26,7 @@ begin
 	end if;
 	
 	-- valida que la fecha de entrega del pedido sea mayor a la fecha actual.
-	if fecha_y_hora_entrega > current_timestamp then 
+	if fecha_entrega > current_timestamp then 
 	insert into error(id_error, id_pedido, f_error, motivo)
 			values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?fecha de entrega no válida'); 
 		raise 'fecha de entrega no válida';
