@@ -1,5 +1,5 @@
 = Bases de datos: Trabajo Práctico
-Brian_Thomas Banchero <brianthomas_banchero@hotmail.com>
+Brian_Thomas Banchero <brianthomas_banchero@hotmail.com>; Ornella Albarracín_Gioia <ornella.alb869@gmail.com>
 v1, {docdate}. Docentes Daniel Bertaccini y Hernán Rondelli (COM-02)
 :title-page:
 :numbered:
@@ -14,8 +14,13 @@ Además, se busca conservar toda la información de les clientes registrados y d
 == Descripción
 // aca van las dificultades q tuvimos
 
-
 == Implementación
 // aca va el codigo
+
+ .Creación del pedido
+ [source, sql]
+ ----
+ include::/stored-procedures/creacion_del_pedido.sql[]
+ ----
 
 == Conclusiones
