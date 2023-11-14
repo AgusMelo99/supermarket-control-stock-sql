@@ -114,7 +114,7 @@ func InsertarOperaciones(db *sql.DB){
 						log.Fatal(err)
 					}
 					fmt.Println(resultado)
-				} else if d.Operacion == "cancelacion" {
+				} else if d.Operacion == "cancelación" {
 					insert := fmt.Sprintf(`select * from cancelacion_de_pedido(%v)`, d.Id_pedido)
 					err := db.QueryRow(insert).Scan(&resultado)
 					if err != nil {

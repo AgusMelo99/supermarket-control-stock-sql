@@ -36,9 +36,9 @@ begin
 		insert into envio_email values (COALESCE((select max(id_email) + 1 from envio_email), 0), current_timestamp, email_del_cliente, 'Pedido aceptado', cuerpo, current_timestamp, 'enviado');
 		
 	elsif this_pedido.estado = 'cancelado' then
-		cuerpo:= 'Te enviamos este mail para confirmarte que el pedido con el ID numero:' || ' ' || this_pedido.id || ' ' ||
+		cuerpo:= 'Te enviamos este mail para confirmarte que el pedido con el ID numero:' || ' ' || this_pedido.id_pedido || ' ' ||
 				'ha sido cancelado, a continuacion los detalles del mismo: \n' || ' ' ||
-				'ID: ' || this_pedido.id || '\n' ||
+				'ID: ' || this_pedido.id_pedido || '\n' ||
 				'Fecha del pedido: ' || this_pedido.f_pedido || '\n' ||
 				'Direccion de entrega: ' || direccion_de_entrega || '\n' ||
 				'Nombre del producto: ' || nombre_del_producto || '\n' ||
@@ -49,9 +49,9 @@ begin
 		insert into envio_email values (COALESCE((select max(id_email) + 1 from envio_email), 0), current_timestamp, email_del_cliente, 'Pedido cancelado', cuerpo, current_timestamp, 'cancelado');
 			
 	elsif this_pedido.estado = 'entregado' then
-		cuerpo:= 'Te enviamos este mail para confirmarte que el pedido con el ID numero:' || ' ' || this_pedido.id || ' ' ||
+		cuerpo:= 'Te enviamos este mail para confirmarte que el pedido con el ID numero:' || ' ' || this_pedido.id_pedido || ' ' ||
 				'ha sido entregado, a continuacion los detalles del mismo: \n' || ' ' ||
-				'ID: ' || this_pedido.id || '\n' ||
+				'ID: ' || this_pedido.id_pedido || '\n' ||
 				'Fecha del pedido: ' || this_pedido.f_pedido || '\n' ||
 				'Direccion de entrega: ' || direccion_de_entrega || '\n' ||
 				'Nombre del producto: ' || nombre_del_producto || '\n' ||
@@ -63,7 +63,7 @@ begin
 			-- el segundo current_timestamp deberia ser la fecha del dia siguiente.
 			-- falta validar que la fecha actual current_timestamp sea igual al registro de la fecha siguiente para updatear el estado del envio a "enviado"
 			
-		cuerpo:= 'Te esta encuesta del pedido:' || ' ' || this_pedido.id || ' ' ||
+		cuerpo:= 'Te esta encuesta del pedido:' || ' ' || this_pedido.id_pedido || ' ' ||
 				'para saber el nivel de satisfaccion durante el periodo de compra y envio\n';
 				
 		insert into envio_email values (COALESCE((select max(id_email) + 1 from envio_email), 0), current_timestamp, email_del_cliente, 'encuesta', cuerpo, null, 'pendiente');
