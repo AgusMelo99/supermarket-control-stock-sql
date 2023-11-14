@@ -1,5 +1,9 @@
 package datajson
 
+import (
+	"database/sql"
+)
+
 type Cliente struct {
 	Id_usuarie	int
 	Nombre		string
@@ -36,12 +40,12 @@ type Producto struct {
 type Pedido struct {
 	Id_pedido	int
 	F_pedido	string
-	Fecha_entrega	string
-	Hora_entrega_desde	string
-	Hora_entrega_hasta	string
+	Fecha_entrega	sql.NullString
+	Hora_entrega_desde	sql.NullString
+	Hora_entrega_hasta	sql.NullString
 	Id_usuarie	int
 	Id_direccion_entrega int
-	Monto_total	float64
+	Monto_total	sql.NullFloat64
 	Costo_envio	float64
 	Estado		string
 	}
@@ -66,25 +70,25 @@ type Envio_email struct{
 	F_generacion	string
 	Email_cliente	string
 	Asunto	string
-	Cuerpo	string
-	F_envio	string
+	Cuerpo	sql.NullString
+	F_envio	sql.NullString
 	Estado	string
 	}
 	
 type Error struct{
 	Id_error int
-	Id_pedido	int
-	F_pedido	string
-	Id_usuarie	int
-	Id_direccion_entrega int
-	Direccion	string
-	Localidad	string
-	Codigo_postal	string
-	Id_producto int
-	Cantidad int
-	Operacion string
-	F_error string
-	Motivo	string
+	Id_pedido	sql.NullInt64
+	F_pedido	sql.NullString
+	Id_usuarie	sql.NullInt64
+	Id_direccion_entrega sql.NullInt64
+	Direccion	sql.NullString
+	Localidad	sql.NullString
+	Codigo_postal	sql.NullString
+	Id_producto sql.NullInt64
+	Cantidad sql.NullInt64
+	Operacion sql.NullString
+	F_error sql.NullString
+	Motivo	sql.NullString
 	}
 	
 type Entrada_trx_pedido struct {

@@ -63,7 +63,7 @@ begin
 	update producto set stock_reservado = (stock_reservado + cantidad_producto) where id_producto = producto_id;
 		
 	-- paso 3: actualizar el monto total del pedido
-	update pedido set monto_total = (monto_total + (precio_unitario_producto * cantidad_producto)) where id_pedido = pedido_id;
+	update pedido set monto_total = (coalesce(monto_total, 0) + (precio_unitario_producto * cantidad_producto)) where id_pedido = pedido_id;
 	return true;
 end;
 

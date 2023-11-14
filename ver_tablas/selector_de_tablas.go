@@ -6,6 +6,7 @@ import (
 	_"github.com/lib/pq"
 	"log"
 	structs	"trabajo-practico-base-de-datos/datajson"
+	"strconv"
 )
 
 // 
@@ -64,8 +65,28 @@ func VerPedidos(db *sql.DB){
 		if err := rows.Scan(&p.Id_pedido, &p.F_pedido, &p.Fecha_entrega, &p.Hora_entrega_desde, &p.Hora_entrega_hasta, &p.Id_usuarie, &p.Id_direccion_entrega, &p.Monto_total, &p.Costo_envio, &p.Estado); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("Pedido ID: %v, Fecha del pedido: %v, Fecha de entrega: %v, Desde:%v, Hasta:%v, Id de usuarie: %v, Id direccion de entrega: %v, Monto total: %v, Costo de envio: %v, Estado de envio %v\n",
-					p.Id_pedido, p.F_pedido, p.Fecha_entrega, p.Hora_entrega_desde, p.Hora_entrega_hasta, p.Id_usuarie, p.Id_direccion_entrega, p.Monto_total, p.Costo_envio, p.Estado)
+		var ret string;
+		ret = "---------------------------------------------------\n"
+		ret = ret + "Pedido ID: " + strconv.Itoa(p.Id_pedido) + "\n"
+		ret = ret + "Fecha de pedido: " + p.F_pedido + "\n"
+		if p.Fecha_entrega.Valid {
+			ret = ret + "Fecha de entrega: " + p.Fecha_entrega.String + "\n"	
+		}
+		if p.Hora_entrega_desde.Valid {
+			ret = ret + "Hora entrega desde: " + p.Hora_entrega_desde.String + "\n"	
+		}
+		if p.Hora_entrega_hasta.Valid {
+			ret = ret + "Hora entrega hasta: " + p.Hora_entrega_hasta.String + "\n"	
+		}
+		ret = ret + "Usuarie ID: " + strconv.Itoa(p.Id_usuarie) + "\n"
+		ret = ret + "Direccion de entrega ID: " + strconv.Itoa(p.Id_direccion_entrega) + "\n"
+		if p.Monto_total.Valid {
+			ret = ret + "Monto total: " + strconv.FormatFloat(p.Monto_total.Float64, 'f', -1, 64) + "\n"	
+		}
+		ret = ret + "Costo de envio: " + strconv.FormatFloat(p.Costo_envio, 'f', -1, 64) + "\n"
+		ret = ret + "Estado: " + p.Estado + "\n"
+		
+		fmt.Printf(ret)
 	}
 }
 
@@ -121,11 +142,24 @@ func VerEmails(db *sql.DB){
     var e structs.Envio_email
     fmt.Printf("A continuacion se mostrara el contenido de la tabla envio_email: \n")
     for rows.Next() {
-		if err := rows.Scan(&e.Id_email, &e.F_generacion, &e.Asunto, &e.Cuerpo, &e.F_envio, &e.Estado); err != nil {
+		if err := rows.Scan(&e.Id_email, &e.F_generacion, &e.Email_cliente, &e.Asunto, &e.Cuerpo, &e.F_envio, &e.Estado); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("Email ID: %v, Fecha de generacion: %v, Asunto: %v, Cuerpo: %v, Fecha de envio: %v, Estado: %v\n",
-					e.Id_email, e.F_generacion, e.Asunto, e.Cuerpo, e.F_envio, e.Estado)
+		var ret string
+		ret = "---------------------------------------------------\n"
+		ret = ret + "Email ID: " + strconv.Itoa(e.Id_email) + "\n"
+		ret = ret + "Fecha de generacion: " + e.F_generacion + "\n"
+		ret = ret + "Email del cliente: " + e.Email_cliente + "\n"
+		ret = ret + "Asunto: " + e.Asunto + "\n"
+		if e.Cuerpo.Valid {
+			ret = ret + "Cuerpo: " + e.Cuerpo.String + "\n"	
+		}
+		if e.F_envio.Valid {
+			ret = ret + "Fecha de envio: " + e.F_envio.String + "\n"	
+		}
+		ret = ret + "Estado: " + e.Estado + "\n"
+		
+		fmt.Printf(ret)
 	}
 }
 
@@ -144,7 +178,46 @@ func VerErrores(db *sql.DB){
 		if err := rows.Scan(&e.Id_error, &e.Id_pedido, &e.F_pedido, &e.Id_usuarie, &e.Id_direccion_entrega, &e.Direccion, &e.Localidad, &e.Codigo_postal, &e.Id_producto, &e.Cantidad, &e.Operacion, &e.F_error, &e.Motivo); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("Error ID: %v, Pedido ID: %v, Fecha de pedido: %v, Usuarie ID: %v, Direccion de entrega ID: %v, Direccion: %v, Localidad : %v, Codigo postal: %v, Producto ID: %v, Cantidad: %v\n",
-					e.Id_error, e.Id_pedido, e.F_pedido, e.Id_usuarie, e.Id_direccion_entrega, e.Direccion, e.Localidad, e.Codigo_postal, e.Id_producto, e.Cantidad, e.Operacion, e.F_error, e.Motivo)
+		var ret string
+		ret = "---------------------------------------------------\n"
+		ret = ret + "Error ID: " + strconv.Itoa(e.Id_error) + "\n"
+
+		if e.Id_pedido.Valid {
+			ret = ret + "Pedido ID: " + strconv.FormatInt(e.Id_pedido.Int64, 10) + "\n"
+		}
+		if e.F_pedido.Valid{
+			ret = ret + "Fecha de pedido: " + e.F_pedido.String + "\n"
+		}
+		if e.Id_usuarie.Valid{
+			ret = ret + "Usuarie ID: " + strconv.FormatInt(e.Id_usuarie.Int64, 10) + "\n"
+		}
+		if e.Id_direccion_entrega.Valid {
+			ret = ret + "Direccion de entrega ID: " + strconv.FormatInt(e.Id_direccion_entrega.Int64, 10) + "\n"
+		}
+		if e.Direccion.Valid {
+			ret = ret + "Direccion: " + e.F_pedido.String + "\n"
+		}
+		if e.Localidad.Valid {
+			ret = ret + "Localidad: " + e.F_pedido.String + "\n"
+		}
+		if e.Codigo_postal.Valid {
+			ret = ret + "Codigo postal: " + e.Codigo_postal.String + "\n"
+		}
+		if e.Id_producto.Valid {
+			ret = ret + "Producto ID: " + strconv.FormatInt(e.Id_producto.Int64, 10) + "\n"
+		}
+		if e.Cantidad.Valid {
+			ret = ret + "Cantidad: " + strconv.FormatInt(e.Cantidad.Int64, 10) + "\n"
+		}
+		if e.Operacion.Valid {
+			ret = ret + "Operacion: " + e.Operacion.String + "\n"
+		}
+		if e.F_error.Valid {
+			ret = ret + "Fecha del error: " + e.F_error.String + "\n"
+		}
+		if e.Motivo.Valid {
+			ret = ret + "Motivo: " + e.Motivo.String + "\n"
+		}
+		fmt.Printf(ret)
 	}
 }
