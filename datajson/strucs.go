@@ -3,7 +3,10 @@ package datajson
 import (
 	"database/sql"
 )
-
+/* sql.NullString, sql.NullINt64 y sql.NullFloat64 son tipos de datos que a diferencia de int, string y float64 pueden tomar Null como valor
+ * por eso las columnas que en algun momento de la ejecucion pueden ser null toman esos tipos de valores
+ * estos tienen una funcion .Valid (retorna true o false) la cual verifica si el valor contenido es Null o tiene un valor insertado
+*/
 type Cliente struct {
 	Id_usuarie	int
 	Nombre		string
@@ -40,7 +43,7 @@ type Producto struct {
 type Pedido struct {
 	Id_pedido	int
 	F_pedido	string
-	Fecha_entrega	sql.NullString
+	Fecha_entrega	sql.NullString 
 	Hora_entrega_desde	sql.NullString
 	Hora_entrega_hasta	sql.NullString
 	Id_usuarie	int

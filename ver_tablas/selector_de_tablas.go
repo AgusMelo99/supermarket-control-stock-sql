@@ -72,7 +72,8 @@ func VerPedidos(db *sql.DB){
 		if p.Fecha_entrega.Valid {
 			ret = ret + "Fecha de entrega: " + p.Fecha_entrega.String + "\n"	
 		}
-		if p.Hora_entrega_desde.Valid {
+		if p.Hora_entrega_desde.Valid { //al llamar al metodo .Valid verifico si el contenido de 
+										//p.Hora_entrega_desde es null (false) o tiene un valor (true)
 			ret = ret + "Hora entrega desde: " + p.Hora_entrega_desde.String + "\n"	
 		}
 		if p.Hora_entrega_hasta.Valid {
@@ -151,7 +152,8 @@ func VerEmails(db *sql.DB){
 		ret = ret + "Fecha de generacion: " + e.F_generacion + "\n"
 		ret = ret + "Email del cliente: " + e.Email_cliente + "\n"
 		ret = ret + "Asunto: " + e.Asunto + "\n"
-		if e.Cuerpo.Valid {
+		if e.Cuerpo.Valid {//al llamar al metodo .Valid verifico si el contenido de 
+							//p.Cuerpo es null (false) o tiene un valor (true)
 			ret = ret + "Cuerpo: " + e.Cuerpo.String + "\n"	
 		}
 		if e.F_envio.Valid {
@@ -182,7 +184,9 @@ func VerErrores(db *sql.DB){
 		ret = "---------------------------------------------------\n"
 		ret = ret + "Error ID: " + strconv.Itoa(e.Id_error) + "\n"
 
-		if e.Id_pedido.Valid {
+		if e.Id_pedido.Valid {//al llamar al metodo .Valid verifico si el contenido de 
+							//e.Id_pedido es null (false) o tiene un valor (true)
+							//y asi con los demas valores
 			ret = ret + "Pedido ID: " + strconv.FormatInt(e.Id_pedido.Int64, 10) + "\n"
 		}
 		if e.F_pedido.Valid{
