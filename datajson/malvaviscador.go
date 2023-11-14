@@ -101,7 +101,7 @@ func InsertarOperaciones(db *sql.DB){
 					}
 					fmt.Println(resultado)
 				} else if d.Operacion == "cierre" {
-					insert := fmt.Sprintf(`select * from cierre_del_pedido(%v, %v)`, d.Id_pedido, d.Fecha_hora_entrega)
+					insert := fmt.Sprintf(`select * from cierre_del_pedido(%v, '%v')`, d.Id_pedido, d.Fecha_hora_entrega)
 					err := db.QueryRow(insert).Scan(&resultado)
 					if err != nil {
 						log.Fatal(err)

@@ -23,10 +23,11 @@ func printMenu() {
 	fmt.Println("7. Ver clientes \n")
 	fmt.Println("8. Ver productos \n")
 	fmt.Println("9. Ver pedidos \n")
-	fmt.Println("10. Ver reposicion \n")
-	fmt.Println("11. Ver emails \n")
-	fmt.Println("12. Ver errores \n")
-	// cargar pedidos de prueba
+	fmt.Println("10. Ver detalles de los pedidos \n")
+	fmt.Println("11. Ver reposición \n")
+	fmt.Println("12. Ver envio de mails \n")
+	fmt.Println("13. Ver errores \n")
+	fmt.Println("14. Cargar pedidos de prueba\n")
 	fmt.Println("0. Cerrar sesion\n")
 	}
 
