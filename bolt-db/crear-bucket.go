@@ -9,7 +9,7 @@ func CrearBucket(db *bolt.DB, bucketName string, key []byte, val []byte) error {
 	}
 	defer tx.Rollback()
 	
-	b, _ := tx.CreateBuckerIfNotExists([]byte(bucketName))
+	b, _ := tx.CreateBucketIfNotExists([]byte(bucketName))
 	
 	err = b.Put(key, val)
 	if err != nil {
