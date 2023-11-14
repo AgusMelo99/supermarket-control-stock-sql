@@ -80,6 +80,9 @@ func continuar (opcion int){
 			} else if opcion == 13 {
 				fmt.Println("Elegiste la opcion 13, a continuacion se mostrara el contenido de la tabla error\n")
 				ver.VerErrores(ConexionDataBase)
+			} else if opcion == 14 {
+				fmt.Println("Elegiste la opcion 14, a continuacion se insertaran las operaciones sobre la base de datos\n")
+				datos.InsertarOperaciones(ConexionDataBase)
 			}
 	}
 

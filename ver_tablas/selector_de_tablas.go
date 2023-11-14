@@ -141,10 +141,10 @@ func VerErrores(db *sql.DB){
     var e structs.Error
     fmt.Printf("A continuacion se mostrara el contenido de la tabla error: \n")
     for rows.Next() {
-		if err := rows.Scan(&e.Id_error, &e.Id_pedido, &e.F_pedido, &e.Id_usuarie, &e.Id_direccion_entrega, &e.Direccion, &e.Localidad, &e.Codigo_postal, &e.Id_producto, &e.Cantidad, &e.Operacion, &e.Operacion, &e.F_error, &e.Motivo); err != nil {
+		if err := rows.Scan(&e.Id_error, &e.Id_pedido, &e.F_pedido, &e.Id_usuarie, &e.Id_direccion_entrega, &e.Direccion, &e.Localidad, &e.Codigo_postal, &e.Id_producto, &e.Cantidad, &e.Operacion, &e.F_error, &e.Motivo); err != nil {
 			log.Fatal(err)
 		}
 		fmt.Printf("Error ID: %v, Pedido ID: %v, Fecha de pedido: %v, Usuarie ID: %v, Direccion de entrega ID: %v, Direccion: %v, Localidad : %v, Codigo postal: %v, Producto ID: %v, Cantidad: %v\n",
-					e.Id_error, e.Id_pedido, e.F_pedido, e.Id_usuarie, e.Id_direccion_entrega, e.Direccion, e.Localidad, e.Codigo_postal, e.Id_producto, e.Cantidad, e.Operacion, e.Operacion, e.F_error, e.Motivo)
+					e.Id_error, e.Id_pedido, e.F_pedido, e.Id_usuarie, e.Id_direccion_entrega, e.Direccion, e.Localidad, e.Codigo_postal, e.Id_producto, e.Cantidad, e.Operacion, e.F_error, e.Motivo)
 	}
 }

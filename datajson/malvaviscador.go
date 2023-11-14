@@ -12,6 +12,7 @@ var clientes [] Cliente
 var productos [] Producto
 var direcciones [] Direccion_entrega
 var tarifas_entrega [] Tarifa_entrega
+var entrada_trx_pedidos [] Entrada_trx_pedido
 
 func InsertarClientes(db *sql.DB){
 	//Inserta los registros en la tabla cliente
@@ -80,6 +81,54 @@ func InsertarDireccionesEntrega(db *sql.DB){
 	}		
 }
 
+func InsertarOperaciones(db *sql.DB){
+	if entrada_trx_pedidos != nil{
+		var resultado bool
+		for _, d := range entrada_trx_pedidos {
+				fmt.Printf("RESULTADO ORDEN ID %v \n", d.Id_orden)
+				if d.Operacion == "creación" {
+					insert := fmt.Sprintf(`select * from creacion_del_pedido(%v, %v)`, d.Id_usuarie, d.Id_direccion_entrega)
+					err := db.QueryRow(insert).Scan(&resultado)
+					if err != nil {
+						log.Fatal(err)
+					}
+					fmt.Println(resultado)
+				} else if d.Operacion == "producto" {
+					insert := fmt.Sprintf(`select * from agregado_de_producto(%v, %v, %v)`, d.Id_pedido, d.Id_producto, d.Cantidad)
+					err := db.QueryRow(insert).Scan(&resultado)
+					if err != nil {
+						log.Fatal(err)
+					}
+					fmt.Println(resultado)
+				} else if d.Operacion == "cierre" {
+					insert := fmt.Sprintf(`select * from cierre_del_pedido(%v, %v)`, d.Id_pedido, d.Fecha_hora_entrega)
+					err := db.QueryRow(insert).Scan(&resultado)
+					if err != nil {
+						log.Fatal(err)
+					}
+					fmt.Println(resultado)
+				} else if d.Operacion == "entrega" {
+					insert := fmt.Sprintf(`select * from entrega_pedido(%v)`, d.Id_pedido)
+					err := db.QueryRow(insert).Scan(&resultado)
+					if err != nil {
+						log.Fatal(err)
+					}
+					fmt.Println(resultado)
+				} else if d.Operacion == "cancelacion" {
+					insert := fmt.Sprintf(`select * from cancelacion_de_pedido(%v)`, d.Id_pedido)
+					err := db.QueryRow(insert).Scan(&resultado)
+					if err != nil {
+						log.Fatal(err)
+					}
+					fmt.Println(resultado)
+				}
+		}
+		fmt.Println("Direcciones insertadas correctamente \n")
+	}else{
+		fmt.Println("Todavia no leiste el JSON trx_pedidos \n")
+	}		
+}
+
 
 	
 //esto seguramente se puede hacer con funciones y debe quedar mas bonito de ver y leer, pero no quiero hacer cagada
@@ -97,8 +146,6 @@ func Unmalvaviscador(){
 	}
 	
 	fmt.Println("clientes.json leido correctamente \n")
-	fmt.Println("Contenido de clientes.json: \n")
-	//fmt.Printf("%v\n", clientes)
 	
 	//Unmarshall direcciones.json
 	jsonFile, err = ioutil.ReadFile("datajson/direcciones.json")
@@ -112,8 +159,6 @@ func Unmalvaviscador(){
 	}
 	
 	fmt.Println("direcciones.json leido correctamente \n")
-	fmt.Println("Contenido de direcciones.json: \n")
-	//fmt.Printf("%v\n", direcciones)
     
     //Unmarshall productos.json
     jsonFile, err = ioutil.ReadFile("datajson/productos.json")
@@ -127,8 +172,6 @@ func Unmalvaviscador(){
 	}
 	
 	fmt.Println("productos.json leido correctamente \n")
-	fmt.Println("Contenido de productos.json: \n")
-	//fmt.Printf("%v\n", productos)
 	
 	//Unmarshall tarifas_entrega.json
 	jsonFile, err = ioutil.ReadFile("datajson/tarifas_entrega.json")
@@ -142,6 +185,17 @@ func Unmalvaviscador(){
 	}
 	
 	fmt.Println("tarifas_entrega.json leido correctamente \n")
-	fmt.Println("Contenido de tarifas_entrega.json: \n")
 	//fmt.Printf("%v\n", tarifas_entrega)
+	
+	jsonFile, err = ioutil.ReadFile("datajson/trx_pedido.json")
+	if err != nil {
+        log.Fatalf("Error al leer el archivo JSON: %s", err)
+    }
+    
+	err = json.Unmarshal(jsonFile, &entrada_trx_pedidos)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+	
+	fmt.Println("trx_pedidos.json leido correctamente \n")
 }

@@ -11,7 +11,6 @@ begin
 		insert into error(id_error, id_pedido, f_error, motivo)
 		values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?id de pedido no valido.'); 
 		
-		raise 'id de pedido no valido.';
 		return false;
 	end if;
 	
@@ -21,15 +20,13 @@ begin
 	if cantidad_productos < 1 then
 	insert into error(id_error, id_pedido, f_error, motivo)
 			values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?pedido vacio'); 
-		raise 'pedido vacio';
 		return false;
 	end if;
 	
 	-- valida que la fecha de entrega del pedido sea mayor a la fecha actual.
-	if fecha_entrega > current_timestamp then 
+	if fecha_entrega < current_timestamp then 
 	insert into error(id_error, id_pedido, f_error, motivo)
 			values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?fecha de entrega no válida'); 
-		raise 'fecha de entrega no válida';
 		return false;
 	end if;
 	

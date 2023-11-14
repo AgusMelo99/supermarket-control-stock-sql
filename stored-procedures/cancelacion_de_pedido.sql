@@ -11,7 +11,6 @@ begin
 		insert into error(id_error, id_pedido, f_error, motivo)
 		values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?id de pedido no valido.'); 
 		
-		raise 'id de pedido no valido.';
 		return false;
 	end if;
 	
@@ -21,7 +20,6 @@ begin
 		insert into error(id_error, id_pedido, f_error, motivo)
 		values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?pedido ya entregado o completado.'); 
 		
-		raise 'pedido ya entregado o completado.';
 		return false;
 	end if;
 	

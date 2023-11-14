@@ -86,6 +86,17 @@ type Error struct{
 	F_error string
 	Motivo	string
 	}
+	
+type Entrada_trx_pedido struct {
+	Id_orden int
+	Operacion string
+	Id_usuarie int
+	Id_direccion_entrega int
+	Id_pedido int
+	Id_producto int
+	Cantidad int
+	Fecha_hora_entrega string
+	}
 
 
 	
