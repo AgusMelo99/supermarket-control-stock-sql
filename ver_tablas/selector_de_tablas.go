@@ -9,15 +9,12 @@ import (
 )
 
 // 
-func VerClientes(){
-	db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
-    
+func VerClientes(db *sql.DB){
     //hace la sentencia en sql
     rows, err := db.Query(`select * from cliente`)
+    if err != nil {
+		log.Fatal(err)
+		}
     defer rows.Close()
     
     //utilizamos el struct c para guardar los datos
@@ -32,15 +29,12 @@ func VerClientes(){
 		}
 }
 
-func VerProductos(){
-		db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
-    
+func VerProductos(db *sql.DB){
     //hace la sentencia en sql
     rows, err := db.Query(`select * from producto`)
+    if err != nil {
+		log.Fatal(err)
+		}
     defer rows.Close()
     
     //utilizamos el struct p para guardar los datos
@@ -55,15 +49,12 @@ func VerProductos(){
 	}
 }
 
-func VerPedidos(){
-		db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
-    
+func VerPedidos(db *sql.DB){
     //hace la sentencia en sql
     rows, err := db.Query(`select * from pedido`)
+    if err != nil {
+		log.Fatal(err)
+		}
     defer rows.Close()
     
     //utilizamos el struct p para guardar los datos
@@ -78,15 +69,12 @@ func VerPedidos(){
 	}
 }
 
-func VerPedidosDetalle(){
-		db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
-    
+func VerPedidosDetalle(db *sql.DB){
     //hace la sentencia en sql
     rows, err := db.Query(`select * from pedido_detalle`)
+    if err != nil {
+		log.Fatal(err)
+		}
     defer rows.Close()
     
     //utilizamos el struct p para guardar los datos
@@ -101,15 +89,12 @@ func VerPedidosDetalle(){
 	}
 }
 
-func VerReposicion(){
-		db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
-    
+func VerReposicion(db *sql.DB){
     //hace la sentencia en sql
     rows, err := db.Query(`select * from reposicion`)
+    if err != nil {
+		log.Fatal(err)
+		}
     defer rows.Close()
     
     //utilizamos el struct r para guardar los datos
@@ -124,15 +109,12 @@ func VerReposicion(){
 	}
 }
 
-func VerEmails(){
-		db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
-    
+func VerEmails(db *sql.DB){
     //hace la sentencia en sql
     rows, err := db.Query(`select * from envio_email`)
+    if err != nil {
+		log.Fatal(err)
+		}
     defer rows.Close()
     
     //utilizamos el struct e para guardar los datos
@@ -147,15 +129,12 @@ func VerEmails(){
 	}
 }
 
-func VerErrores(){
-		db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
-    
+func VerErrores(db *sql.DB){
     //hace la sentencia en sql
     rows, err := db.Query(`select * from error`)
+    if err != nil {
+		log.Fatal(err)
+		}
     defer rows.Close()
     
     //utilizamos el struct e para guardar los datos

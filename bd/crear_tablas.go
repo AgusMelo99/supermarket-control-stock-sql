@@ -7,14 +7,8 @@ import (
 	"log"
 )
 
-func CreateTables(){
-	db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
-    
-    _,err = db.Exec(`create table cliente(id_usuarie int, nombre text, apellido text, dni int, fecha_nacimento date, telefono char(12), email text);`)
+func CreateTables(db *sql.DB){
+    _,err := db.Exec(`create table cliente(id_usuarie int, nombre text, apellido text, dni int, fecha_nacimento date, telefono char(12), email text);`)
     if err != nil {
         log.Fatal(err)
     }

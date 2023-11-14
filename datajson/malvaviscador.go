@@ -13,19 +13,13 @@ var productos [] Producto
 var direcciones [] Direccion_entrega
 var tarifas_entrega [] Tarifa_entrega
 
-func InsertarClientes(){
-	db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
-	
+func InsertarClientes(db *sql.DB){
 	//Inserta los registros en la tabla cliente
 	if clientes != nil{
 		for _, c := range clientes {
 				
 				insert := fmt.Sprintf(`insert into cliente values (%v, '%v', '%v', %v, '%v', '%v', '%v');` , c.Id_usuarie, c.Nombre, c.Apellido, c.Dni, c.Fecha_nacimiento, c.Telefono, c.Email)
-			    _, err = db.Exec(insert)
+			    _, err := db.Exec(insert)
 					
 				if err != nil {
 					log.Fatal("Error al insertar cliente \n", err)
@@ -37,16 +31,11 @@ func InsertarClientes(){
 	}	
 }
 
-func InsertarProductos(){
-	db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
+func InsertarProductos(db *sql.DB){
 	if productos != nil{
 		for _, p := range productos {
 				insert := fmt.Sprintf(`insert into producto values (%v,'%v', %v , %v , %v ,%v, %v );` , p.Id_producto, p.Nombre, p.Precio_unitario, p.Stock_disponible, p.Stock_reservado, p.Punto_reposicion,p.Stock_maximo)
-			    _, err = db.Exec(insert)
+			    _, err := db.Exec(insert)
 				
 				if err != nil {
 					log.Fatal("Error al insertar producto \n", err)
@@ -58,16 +47,11 @@ func InsertarProductos(){
 	}	
 }
 
-func InsertarTarifaEntrega(){
-	db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()	
+func InsertarTarifaEntrega(db *sql.DB){
 	if tarifas_entrega != nil{
 		for _, t := range tarifas_entrega {
 				insert := fmt.Sprintf(`insert into tarifa_entrega values ('%v',%v );` , t.Codigo_postal_corto, t.Costo) 
-			    _, err = db.Exec(insert)
+			    _, err := db.Exec(insert)
 				
 				if err != nil {
 					log.Fatal(err)
@@ -79,18 +63,12 @@ func InsertarTarifaEntrega(){
 	}	
 }
 
-func InsertarDireccionesEntrega(){
-	//Inserta los registros en la tabla direccion_entrega
-	db,err := sql.Open("postgres", "user=postgres host=localhost dbname=nissero_albarracin_melo_banchero_db1 sslmode=disable")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
+func InsertarDireccionesEntrega(db *sql.DB){
 	if direcciones != nil{
 		for _, d := range direcciones {
 				
 				insert := fmt.Sprintf(`insert into direccion_entrega values (%v, %v, '%v', '%v', '%v');` , d.Id_usuarie, d.Id_direccion_entrega, d.Direccion, d.Localidad, d.Codigo_postal)
-			    _, err = db.Exec(insert)
+			    _, err := db.Exec(insert)
 				
 				if err != nil {
 					log.Fatal("Error al insertar direccion \n", err)
