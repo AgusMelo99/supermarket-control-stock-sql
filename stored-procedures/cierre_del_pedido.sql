@@ -1,8 +1,9 @@
-create or replace function cierre_del_pedido (pedido_id int, fecha_entrega timestamp) returns boolean as $$
+create or replace function cierre_del_pedido (pedido_id int, fecha_y_hora_entrega timestamp) returns boolean as $$
 
 declare
 	cantidad_productos int;
 	hora_entrega time;
+	fecha_de_entrega date;
 begin
 
 	-- valida que el id del pedido exista en la tabla.
@@ -24,16 +25,24 @@ begin
 	end if;
 	
 	-- valida que la fecha de entrega del pedido sea mayor a la fecha actual.
-	if fecha_entrega < current_timestamp then 
+	if fecha_entrega_y_hora_entrega < current_timestamp then 
 	insert into error(id_error, id_pedido, f_error, motivo)
 			values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?fecha de entrega no válida'); 
 		return false;
 	end if;
 	
 	-- despues de validar todo:
+	--actualiza la fecha de entrega
+	--casteo la fecha de entrega a time para poder actualizar la tabla
+	
+	select cast(fecha_y_hora_entrega as date) into fecha_de_entrega;
+	
+	update pedido set fecha_entrega = fecha_de_entrega where id_pedido = pedido_id;
+	
 	-- actualiza la fecha de entrega del pedido desde y hasta que hora puede llegar.
 	-- casteo la fecha de entrega a time para sacar la hora
-	select cast(fecha_entrega as time) into hora_entrega;
+	
+	select cast(fecha_y_hora_entrega as time) into hora_entrega;
 
 	update pedido set hora_entrega_desde = hora_entrega where id_pedido = pedido_id;
 	update pedido set hora_entrega_hasta = (hora_entrega + interval '2 hour') where id_pedido = pedido_id;	
