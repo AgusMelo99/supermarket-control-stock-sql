@@ -12,7 +12,11 @@ El propósito de este trabajo práctico se basa en el desarrollo de un sistema d
 Además, se busca conservar toda la información de les clientes registrados y de los productos disponibles. Por último, se deberá controlar el stock de los productos y mantener a les clientes informados frente al estado de sus pedidos online.
 
 == Descripción
-// aca van las dificultades q tuvimos
+
+- Se dificultó al comienzo encarar desde cero el trabajo, puesto no teniamos alguna estructura ya pensada o diseñada para lo que nos teniamos que pretender resolver en el trabajo.
+- Algunas decisiones en relación con el diseño del sistema y en base a los enunciados fueron: 
+	En generar_solicitud_reposicion es un procedimiento que se deberia ejecutar diariamente para hacer una petición de reposición a productos con stock bajo. Para ello, se optó por validar primeramente que el stored procedures no se haya ejecutado antes en el mismo dia, en caso de ser así se retorna false. Luego,  
+
 
 == Implementación
 // aca va el codigo
