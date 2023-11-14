@@ -29,26 +29,15 @@ begin
 	update pedido set estado = 'cancelado' where id_pedido = pedido_id;	
 	
 	--inicializo la transaccion
-	begin
-		set transaction isolation level serializable;	
-		-- por cada fila que esté relacionada con el id_pedido que fue cancelado, se guarda el id_producto y cantidad en la variable registro(record).
-		for registro in select id_producto, cantidad from pedido_detalle where id_pedido = pedido_id loop
-		
-		-- actualiza la tabla producto restando al stock_reservado la cantidad del pedido cancelado.
-			update producto set stock_reservado = (stock_reservado - registro.cantidad) where id_producto = registro.id_producto;
-		-- actualiza la tabla producto sumando al stock disponible la cantidad del pedido cancelado
-			update producto set stock_disponible = (stock_disponible + registro.cantidad) where id_producto = registro.id_producto;
-		end loop;
-
-		commit;
-		return true;
-		
-		-- en caso de excepcion hago rollback y retorno false
-		exception
-			when others then
-				rollback;
-				return false;		
-	end;
+	-- por cada fila que esté relacionada con el id_pedido que fue cancelado, se guarda el id_producto y cantidad en la variable registro(record).
+	for registro in select id_producto, cantidad from pedido_detalle where id_pedido = pedido_id loop
+	
+	-- actualiza la tabla producto restando al stock_reservado la cantidad del pedido cancelado.
+		update producto set stock_reservado = (stock_reservado - registro.cantidad) where id_producto = registro.id_producto;
+	-- actualiza la tabla producto sumando al stock disponible la cantidad del pedido cancelado
+		update producto set stock_disponible = (stock_disponible + registro.cantidad) where id_producto = registro.id_producto;
+	end loop;
+	return true;
 end;
 
 $$ language plpgsql;
