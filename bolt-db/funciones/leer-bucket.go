@@ -1,6 +1,7 @@
-package leer_bucket
+package funciones
 
 func LeerBucket(db *bolt.DB, bucketName string, key []byte) ([]byte, error) {
+	var buf []byte
 	
 	//abre transaccion de lectura
 	err := db.View(func(tx *bolt.Tx) error {

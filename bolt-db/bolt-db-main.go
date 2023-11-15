@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	bolt "go.etcd.io/bbolt"
-	funciones "trabajo-practico-base-de-datos/bolt-db"
+	funciones "bolt-db/funciones"
 	"strconv"
 	"encoding/json"
 )
@@ -155,6 +155,6 @@ func main() {
 	funciones.CrearBucket(db, "pedido", []byte(strconv.Itoa(pedido_dos.Id_pedido)), data_pe_dos)
 	
 	//leer los buckets pedido
-	p_uno, err := funcoines.LeerBucket(db, "pedido", []byte(strconv.Itoa(pedido_uno.Id_usuarie)))
-	p_dos, err := funcoines.LeerBucket(db, "pedido", []byte(strconv.Itoa(pedido_dos.Id_usuarie)))
+	p_uno, err := funciones.LeerBucket(db, "pedido", []byte(strconv.Itoa(pedido_uno.Id_usuarie)))
+	p_dos, err := funciones.LeerBucket(db, "pedido", []byte(strconv.Itoa(pedido_dos.Id_usuarie)))
 }

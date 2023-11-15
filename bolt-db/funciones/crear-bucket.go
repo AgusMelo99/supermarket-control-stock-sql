@@ -1,9 +1,9 @@
-package crear_bucket
+package funciones
 
 func CrearBucket(db *bolt.DB, bucketName string, key []byte, val []byte) error {
 	
 	//abre transaccion de escritura
-	tx, error := db.Begin(true)
+	tx, err := db.Begin(true)
 	if err != nil {
 		return err
 	}
