@@ -55,7 +55,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer.db.Close()
+	defer db.Close()
 	
 	// aca se crean los datos
 	cliente_uno := Cliente{1, "Juan", "Perez", 4082390123, "08-08-2000", "1120975982", "juan_perez@gmail.com"}
@@ -136,19 +136,47 @@ func main() {
 	
 	//agregar clientes al respectivo bucket
 	funciones.CrearBucket(db, "cliente", []byte(strconv.Itoa(cliente_uno.Id_usuarie)), data_c_uno)
+	resultadoCliente1, err := funciones.LeerBucket(db, "cliente", []byte(strconv.Itoa(cliente_uno.Id_usuarie)))
+	fmt.Printf("%s\n", resultadoCliente1)
+	
 	funciones.CrearBucket(db, "cliente", []byte(strconv.Itoa(cliente_dos.Id_usuarie)), data_c_dos)
+	resultadoCliente2, err := funciones.LeerBucket(db, "cliente", []byte(strconv.Itoa(cliente_dos.Id_usuarie)))
+	fmt.Printf("%s\n", resultadoCliente2)
 	
 	//agregar direcciones de entrega al respectivo bucket
 	funciones.CrearBucket(db, "direccion_entrega", []byte(strconv.Itoa(direccion_cliente_uno.Id_direccion_entrega)), data_dc_uno)
+	resultadoDireccionEntrega1, err := funciones.LeerBucket(db, "direccion_entrega", []byte(strconv.Itoa(direccion_cliente_uno.Id_direccion_entrega)))
+	fmt.Printf("%s\n", resultadoDireccionEntrega1)
+	
 	funciones.CrearBucket(db, "direccion_entrega", []byte(strconv.Itoa(direccion_cliente_dos.Id_direccion_entrega)), data_dc_dos)
+	resultadoDireccionEntrega2, err := funciones.LeerBucket(db, "direccion_entrega", []byte(strconv.Itoa(direccion_cliente_dos.Id_direccion_entrega)))
+	fmt.Printf("%s\n", resultadoDireccionEntrega2)
+	
 	
 	//agregar productos al respectivo bucket
 	funciones.CrearBucket(db, "producto", []byte(strconv.Itoa(producto_uno.Id_producto)), data_pr_uno)
+	resultadoProducto1, err := funciones.LeerBucket(db, "producto", []byte(strconv.Itoa(producto_uno.Id_producto)))
+	fmt.Printf("%s\n", resultadoProducto1)
+	
 	funciones.CrearBucket(db, "producto", []byte(strconv.Itoa(producto_dos.Id_producto)), data_pr_dos)
+	resultadoProducto2, err := funciones.LeerBucket(db, "producto", []byte(strconv.Itoa(producto_dos.Id_producto)))
+	fmt.Printf("%s\n", resultadoProducto2)
+	
 	funciones.CrearBucket(db, "producto", []byte(strconv.Itoa(producto_tres.Id_producto)), data_pr_tres)
+	resultadoProducto3, err := funciones.LeerBucket(db, "producto", []byte(strconv.Itoa(producto_tres.Id_producto)))
+	fmt.Printf("%s\n", resultadoProducto3)
+	
 	funciones.CrearBucket(db, "producto", []byte(strconv.Itoa(producto_cuatro.Id_producto)), data_pr_cuatro)
+	resultadoProducto4, err := funciones.LeerBucket(db, "producto", []byte(strconv.Itoa(producto_cuatro.Id_producto)))
+	fmt.Printf("%s\n", resultadoProducto4)
+	
 	funciones.CrearBucket(db, "producto", []byte(strconv.Itoa(producto_cinco.Id_producto)), data_pr_cinco)
+	resultadoProducto5, err := funciones.LeerBucket(db, "producto", []byte(strconv.Itoa(producto_cinco.Id_producto)))
+	fmt.Printf("%s\n", resultadoProducto5)
+	
 	funciones.CrearBucket(db, "producto", []byte(strconv.Itoa(producto_seis.Id_producto)), data_pr_seis)
+	resultadoProducto6, err := funciones.LeerBucket(db, "producto", []byte(strconv.Itoa(producto_seis.Id_producto)))
+	fmt.Printf("%s\n", resultadoProducto6)
 	
 	//agregar pedidos al respectivo bucket
 	funciones.CrearBucket(db, "pedido", []byte(strconv.Itoa(pedido_uno.Id_pedido)), data_pe_uno)
@@ -156,5 +184,8 @@ func main() {
 	
 	//leer los buckets pedido
 	p_uno, err := funciones.LeerBucket(db, "pedido", []byte(strconv.Itoa(pedido_uno.Id_usuarie)))
+	fmt.Printf("%s\n", p_uno)
+	
 	p_dos, err := funciones.LeerBucket(db, "pedido", []byte(strconv.Itoa(pedido_dos.Id_usuarie)))
+	fmt.Printf("%s\n", p_dos)
 }

@@ -1,5 +1,9 @@
 package funciones
 
+import (
+	bolt "go.etcd.io/bbolt"
+)
+
 func CrearBucket(db *bolt.DB, bucketName string, key []byte, val []byte) error {
 	
 	//abre transaccion de escritura

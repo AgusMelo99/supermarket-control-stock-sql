@@ -1,5 +1,9 @@
 package funciones
 
+import (
+	bolt "go.etcd.io/bbolt"
+)
+
 func LeerBucket(db *bolt.DB, bucketName string, key []byte) ([]byte, error) {
 	var buf []byte
 	
