@@ -28,6 +28,7 @@ func printMenu() {
 	fmt.Println("12. Ver envio de mails \n")
 	fmt.Println("13. Ver errores \n")
 	fmt.Println("14. Cargar pedidos de prueba\n")
+	fmt.Println("15. Cargar solicitudes de reposicion\n")
 	fmt.Println("0. Cerrar sesion\n")
 	}
 
@@ -84,6 +85,9 @@ func continuar (opcion int){
 			} else if opcion == 14 {
 				fmt.Println("Elegiste la opcion 14, a continuacion se insertaran las operaciones sobre la base de datos\n")
 				datos.InsertarOperaciones(ConexionDataBase)
+			} else if opcion == 15 {
+				fmt.Println("Elegiste la opcion 15, a continuacion se generaran las solicitudes de reposicion\n")
+				datos.GenerarSolicitudesDeReposicion(ConexionDataBase)
 			}
 	}
 

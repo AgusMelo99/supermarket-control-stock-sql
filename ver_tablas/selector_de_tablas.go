@@ -126,8 +126,17 @@ func VerReposicion(db *sql.DB){
 		if err := rows.Scan(&r.Id_producto, &r.Fecha_solicitud, &r.Cantidad_a_reponer, &r.Fecha_reposicion, &r.Estado); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("Producto ID: %v, Fecha de solicitud: %v, Cantidad a reponer: %v, Fecha de reposicion: %v, Estado %v\n",
-					r.Id_producto, r.Fecha_solicitud, r.Cantidad_a_reponer, r.Fecha_reposicion, r.Estado)
+		var ret string
+		ret = "---------------------------------------------------\n"
+		ret = ret + "Producto ID: " + strconv.Itoa(r.Id_producto) + "\n"
+		ret = ret + "Fecha de solicitud: " + r.Fecha_solicitud + "\n"
+		ret = ret + "Cantidad a reponer: " + strconv.Itoa(r.Cantidad_a_reponer) + "\n"
+		if r.Fecha_reposicion.Valid {
+			ret = ret + "Fecha de reposicion: " + r.Fecha_reposicion.String + "\n"
+		}
+		ret = ret + "Estado: " + r.Estado + "\n"
+		
+		fmt.Printf(ret)
 	}
 }
 

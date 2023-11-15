@@ -64,7 +64,7 @@ type Reposicion struct{
 	Id_producto	int
 	Fecha_solicitud string
 	Cantidad_a_reponer int
-	Fecha_reposicion	string
+	Fecha_reposicion	sql.NullString
 	Estado	string
 	}
 

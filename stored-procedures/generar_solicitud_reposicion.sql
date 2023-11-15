@@ -14,9 +14,9 @@ begin
 	
 	-- recorre cada producto verificando si está bajo de stock
 	for registro in select * from producto loop
-		if (registro.stock_disponile + registro.stock_reservado) <= registro.punto_reposicion then
+		if (registro.stock_disponible + registro.stock_reservado) <= registro.punto_reposicion then
 			-- calcula la cantidad que se necesita reponer
-			cantidad_reposicion = registro.stock_maximo - (registro.stock_disponile + registro.stock_reservado);
+			cantidad_reposicion = registro.stock_maximo - (registro.stock_disponible + registro.stock_reservado);
 			
 			-- se inserta un nuevo registro de solicitud en la tabla reposicion
 			insert into reposicion values (registro.id_producto, current_date, cantidad_reposicion, null, 'pendiente');

@@ -129,6 +129,20 @@ func InsertarOperaciones(db *sql.DB){
 	}		
 }
 
+func GenerarSolicitudesDeReposicion(db *sql.DB){
+	var ret bool
+	insert := fmt.Sprintf(`select * from generar_solicitud_reposicion()`)
+	err := db.QueryRow(insert).Scan(&ret)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if ret {
+		fmt.Println("Se han generado solicitudes de reposicion \n")
+	} else {
+		fmt.Println("No se han generado solicitudes de reposicion debido a que ya fueron generadas el dia de hoy \n")
+		}
+}
+
 
 	
 //esto seguramente se puede hacer con funciones y debe quedar mas bonito de ver y leer, pero no quiero hacer cagada
