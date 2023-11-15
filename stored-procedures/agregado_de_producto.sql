@@ -6,8 +6,8 @@ declare
 	stock_producto int;
 	precio_unitario_producto decimal(12,2);
 
-
 begin
+	RAISE NOTICE 'El nivel de aislamiento actual es: %', current_setting('transaction_isolation', true);
 	-- verificar si existe el pedido
 	if not exists (select 1 from pedido p where p.id_pedido = pedido_id) then
 		insert into error(id_error, id_pedido, f_error, motivo)
@@ -15,7 +15,7 @@ begin
 		
 		return false;
 	end if;
-	
+
 	-- verificar que el pedido se encuentre en estado 'ingresado'
 	select estado into estado_pedido from pedido p where p.id_pedido = pedido_id;
 	
