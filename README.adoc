@@ -13,10 +13,25 @@ Además, se busca conservar toda la información de les clientes registrados y d
 
 == Descripción
 
+La elaboración del trabajo, al comienzo, se habia complejizado en cuanto a cómo ibamos a abordar la estructura y el diseño tanto del código como de los archivos. Sin embargo, logramos definir un esquema para el cual se encuentre, por un lado, la aplicación CLI en lenguaje Go y, por otro, el contenido SQL encargado de realizar las consultas necesarias.
+Cabe mencionar que, el CLI contiene un *package main* encargado de abrir una única conexión con la base de datos con la finalidad de que se lleven a cabo todas las operaciones establecidas y, además, muestra por consola opciones que permiten ejecutar el código en un orden específico conjunto la visualización del resultado. De esta manera, se encuentran distintos archivos .go que se ocupan de:
+	* Crear la base de datos.
+	* Crear tablas.
+	* Crear las primary key y foreign key según corresponda.
+	* Lectura de los datos .json (decoding) e insertar los registros en las tablas.
+	
 - Se dificultó al comienzo encarar desde cero el trabajo, puesto no teniamos alguna estructura ya pensada o diseñada para lo que nos teniamos que pretender resolver en el trabajo.
 - Algunas decisiones en relación con el diseño del sistema y en base a los enunciados fueron: 
 	En generar_solicitud_reposicion es un procedimiento que se deberia ejecutar diariamente para hacer una petición de reposición a productos con stock bajo. Para ello, se optó por validar primeramente que el stored procedures no se haya ejecutado antes en el mismo dia, en caso de ser así se retorna false. Luego,  
 
+
+En esta sección pueden incluirse las dificultades que tuvieron, las
+soluciones encontradas, las decisiones que se fueron tomando a lo largo
+del trabajo práctico, y las cuestiones de diseño que consideren
+importantes.
+
+También, se puede incluir una descripción general del programa—cómo
+funciona.
 
 == Implementación
 // aca va el codigo

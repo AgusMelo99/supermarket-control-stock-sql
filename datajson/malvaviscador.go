@@ -104,10 +104,7 @@ func InsertarOperaciones(db *sql.DB){
 					}
 					fmt.Println(resultado)
 				} else if d.Operacion == "cierre" {
-					insert := fmt.Sprintf(`begin; 
-											set transaction isolation level serializable;
-											select * from cierre_del_pedido(%v, '%v'); 
-											commit;`, d.Id_pedido, d.Fecha_hora_entrega)
+					insert := fmt.Sprintf(`select * from cierre_del_pedido(%v, '%v'); `, d.Id_pedido, d.Fecha_hora_entrega)
 					err := db.QueryRow(insert).Scan(&resultado)
 					if err != nil {
 						log.Fatal(err)
@@ -156,8 +153,6 @@ func GenerarSolicitudesDeReposicion(db *sql.DB){
 }
 
 
-	
-//esto seguramente se puede hacer con funciones y debe quedar mas bonito de ver y leer, pero no quiero hacer cagada
 func Unmalvaviscador(){
 	
 	//Unmarshall clientes.json
