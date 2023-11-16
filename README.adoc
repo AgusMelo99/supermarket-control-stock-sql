@@ -1,5 +1,5 @@
 = Bases de datos: Trabajo Práctico
-Brian_Thomas Banchero <brianthomas_banchero@hotmail.com>; Ornella Albarracín_Gioia <ornella.alb869@gmail.com>; Matías Nissero <matiasnissero@gmail.com>;
+Brian_Thomas Banchero <brianthomas_banchero@hotmail.com>; Ornella Albarracín_Gioia <ornella.alb869@gmail.com>; Matías Nissero <matiasnissero@gmail.com>; Javier_Agustín Melo <agustinmelo999@gmail.com>;
 v1, {docdate}. Docentes Daniel Bertaccini y Hernán Rondelli (COM-02)
 :title-page:
 :numbered:
@@ -37,6 +37,8 @@ De esta manera, optamos por mantener el nivel de aislamiento predeterminado de P
 
 También, tuvimos inconvenientes en `selector_de_tablas.go` para mostrar las tablas por consola, dado que se reutilizaban los *strucs* predefinidos que contenian tipos de datos como _int_, _string_ y _float64_. Pero, habian datos en los strucs que no tenían ningún valor almacenado, por ende, eran _null_ y al querer imprimirlos en pantalla, Go no permitía correr la función.
 Para resolver esto, reemplazamos los tipos de datos en los strucs por _sql.NullString_, _sql.NullINt64_ y _sql.NullFloat64_ que verifican no sólo si hay un valor insertado y lo guarda, sino también que pueden tomar valores null en caso contrario.
+
+Otro inconveniente fue el tema de la sintaxis, dado que no teníamos un editor que nos avise que olvidamos un ";" u otros tipos de errores de tipeo y no sabíamos en que línea de código nos habíamos equivocado. Por lo que cuando corríamos el programa nos tiraba un error y teniamos que buscar de donde provenía, debido a esto empezado a trabajar los problemas mas en bloques y viendo donde es que fallabamos.
 
 == Implementación
 // aca va el codigo
