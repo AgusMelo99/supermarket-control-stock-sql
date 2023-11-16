@@ -95,8 +95,8 @@ func InsertarOperaciones(db *sql.DB){
 					fmt.Println(resultado)
 				} else if d.Operacion == "producto" {
 					insert := fmt.Sprintf(`begin; 
-											set transaction isolation level serializable;
 											select * from agregado_de_producto(%v, %v, %v); 
+											select pg_sleep(10);
 											commit;`, d.Id_pedido, d.Id_producto, d.Cantidad)
 					err := db.QueryRow(insert).Scan(&resultado)
 					if err != nil {
@@ -112,8 +112,8 @@ func InsertarOperaciones(db *sql.DB){
 					fmt.Println(resultado)
 				} else if d.Operacion == "entrega" {
 					insert := fmt.Sprintf(`begin; 
-											set transaction isolation level serializable;
-											select * from entrega_pedido(%v) 
+											select * from entrega_pedido(%v);
+											select pg_sleep(10);
 											commit;`, d.Id_pedido)
 					err := db.QueryRow(insert).Scan(&resultado)
 					if err != nil {
@@ -122,8 +122,8 @@ func InsertarOperaciones(db *sql.DB){
 					fmt.Println(resultado)
 				} else if d.Operacion == "cancelación" {
 					insert := fmt.Sprintf(`begin; 
-											set transaction isolation level serializable;
-											select * from cancelacion_de_pedido(%v) 
+											select * from cancelacion_de_pedido(%v);
+											select pg_sleep(10);
 											commit;`, d.Id_pedido)
 					err := db.QueryRow(insert).Scan(&resultado)
 					if err != nil {
