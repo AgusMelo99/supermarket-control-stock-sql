@@ -6,7 +6,13 @@ declare
 	registro record;
 	
 begin
-
+	--valida que haya un pedido_detalle con el id del pedido
+	if not exists (select 1 from pedido_detalle p where p.id_pedido = pedido_id) then
+		insert into error(id_error, id_pedido, f_error, motivo)
+		values (coalesce((select max(id_error) from error), 0) + 1, pedido_id, current_date, '?no hay detalle de este pedido.'); 
+		return false;
+	end if;
+	
 	-- valida que el id del pedido exista en la tabla.
 	if not exists (select 1 from pedido p where p.id_pedido = pedido_id) then
 		-- se carga en la tabla el error

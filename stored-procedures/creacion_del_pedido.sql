@@ -6,6 +6,7 @@ declare
 
 	tarifa int;
 	cp_corto char(4);
+	id_del_pedidiho int;
 	
 begin
 	-- verificar si existe el usuario
@@ -45,6 +46,9 @@ begin
 	-- insertar pedido si todos los datos son correctos
 	insert into pedido (id_pedido, f_pedido, id_usuarie, id_direccion_entrega, costo_envio, estado) 
 		values (coalesce((select max(id_pedido) from pedido), 0) + 1, current_timestamp, id_cliente, id_direccion, tarifa, 'ingresado');
+		
+	select max(id_pedido) into id_del_pedidiho from pedido; 
+	raise notice 'el id del pedido es: %', id_del_pedidiho;
 	return true;
 end;
 
