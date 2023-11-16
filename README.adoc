@@ -1,5 +1,5 @@
 = Bases de datos: Trabajo Práctico
-Brian_Thomas Banchero <brianthomas_banchero@hotmail.com>; Ornella Albarracín_Gioia <ornella.alb869@gmail.com>
+Brian_Thomas Banchero <brianthomas_banchero@hotmail.com>; Ornella Albarracín_Gioia <ornella.alb869@gmail.com>; Matías Nissero <matiasnissero@gmail.com>;
 v1, {docdate}. Docentes Daniel Bertaccini y Hernán Rondelli (COM-02)
 :title-page:
 :numbered:
@@ -10,36 +10,38 @@ v1, {docdate}. Docentes Daniel Bertaccini y Hernán Rondelli (COM-02)
 
 El propósito de este trabajo práctico se basa en el desarrollo de un sistema digital, destinado al supermercado ChangoOnline, el cual sea capaz de administrar el ingreso, la cancelación, y la entrega de pedidos.
 Además, se busca conservar toda la información de les clientes registrados y de los productos disponibles. Por último, se deberá controlar el stock de los productos y mantener a les clientes informados frente al estado de sus pedidos online.
+A lo largo del informe mencionarán las cuestiones de diseño respecto del sistema y, posteriormente, se detallarán las dificultades que se presentaron y las soluciones encontradas.
 
 == Descripción
 
-La elaboración del trabajo, al comienzo, se habia complejizado en cuanto a cómo ibamos a abordar la estructura y el diseño tanto del código como de los archivos. Sin embargo, logramos definir un esquema para el cual se encuentre, por un lado, la aplicación CLI en lenguaje Go y, por otro, el contenido SQL encargado de realizar las consultas necesarias.
-Cabe mencionar que, el CLI contiene un *package main* encargado de abrir una única conexión con la base de datos con la finalidad de que se lleven a cabo todas las operaciones establecidas y, además, muestra por consola opciones que permiten ejecutar el código en un orden específico conjunto la visualización del resultado. De esta manera, se encuentran distintos archivos .go que se ocupan de:
-	* Crear la base de datos.
-	* Crear tablas.
-	* Crear las primary key y foreign key según corresponda.
-	* Lectura de los datos .json (decoding) e insertar los registros en las tablas.
+En primer lugar, las cuestiones de estructura y diseño se definieron, por un lado, sobre la aplicación CLI en lenguaje Go y, por otro, en base al contenido SQL encargado de realizar las consultas necesarias.
+En relación a esto, el CLI contiene un *package main* encargado de abrir una única conexión con la base de datos con la finalidad de que se lleven a cabo todas las operaciones establecidas y, además, muestra por consola las opciones que permiten ejecutar el código en un orden específico conjunto la visualización del resultado. De esta manera, se encuentran distintos archivos _.go_ que se ocupan de:
 	
-- Se dificultó al comienzo encarar desde cero el trabajo, puesto no teniamos alguna estructura ya pensada o diseñada para lo que nos teniamos que pretender resolver en el trabajo.
-- Algunas decisiones en relación con el diseño del sistema y en base a los enunciados fueron: 
-	En generar_solicitud_reposicion es un procedimiento que se deberia ejecutar diariamente para hacer una petición de reposición a productos con stock bajo. Para ello, se optó por validar primeramente que el stored procedures no se haya ejecutado antes en el mismo dia, en caso de ser así se retorna false. Luego,  
+	- Crear la base de datos.
+	- Crear tablas.
+	- Crear primary key y foreign key según corresponda.
+	- Lectura de los datos _.json_ (decoding) e insertar los registros en las tablas.
+	- Realizar llamadas a los Stored Procedures y Triggers.
+	- Visualizar en la consola el contenido de tablas y registros.
+	
+Todos estos archivos _.go_ se vinculan con la base de datos para realizar las interacciones requeridas. Asimismo, cada Stored Procedure y Trigger se encuentra separado en un archivo _.sql_ con el objetivo de mantener una organización y abstracción de los distintos puntos a resolver.
 
+En segundo lugar, se presentaron ciertas dificultades durante el desarrollo del trabajo. Una de ellas, surgió al momento de implementar el procedimiento `generar_solicitud_reposicion()`, el mismo debía ejecutarse diariamente para generar peticiones de reposición a productos con bajo stock.
+La dificultad encontrada fue que las validaciones y el retorno eran confusas; no se comprendía si se debian aplicar por cada producto o sobre la tabla en general. Para ello, la solución fue verificar en un principio que no exista alguna solicitud previa registrada con la fecha actual porque eso indicaría que el procedimiento ya se habia generado.
+Y si eso no sucedía, entonces se consultaban aquellos productos que tengan bajo stock para registrar la solicitud en la tabla.
 
-En esta sección pueden incluirse las dificultades que tuvieron, las
-soluciones encontradas, las decisiones que se fueron tomando a lo largo
-del trabajo práctico, y las cuestiones de diseño que consideren
-importantes.
-
-También, se puede incluir una descripción general del programa—cómo
-funciona.
+Por otra parte, se encontró una dificultad con respecto a la implementación de las Transacciones en determinados procedimientos. Dichas transacciones, se aplican sobre operaciones que manipulan valores que suelen ser consultados y modificados reiteradamente (por ejemplo, el `stock_disponible` y `stock_reservado` de los productos), con lo cual la primer idea fue establecer el nivel de aislamiento como serializable.
+Sin embargo, se produjo un problema al corroborar su funcionamiento puesto que habian campos en donde se insertaban valores incorrectos o, en otros casos, no se veían afectados antes ni después de la ejecución. 
+De esta manera, optamos por mantener el nivel de aislamiento predeterminado *READ COMMITTED*.
+	
 
 == Implementación
 // aca va el codigo
 
  .Creación del pedido
- [source, sql]
+ [source, go]
  ----
- include::/stored-procedures/creacion_del_pedido.sql[]
+ include::src/home/lilo/albarracin-banchero-nissero-melo-db1/main.go[]
  ----
 
 == Conclusiones
