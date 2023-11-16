@@ -10,7 +10,8 @@ v1, {docdate}. Docentes Daniel Bertaccini y Hernán Rondelli (COM-02)
 
 El propósito de este trabajo práctico se basa en el desarrollo de un sistema digital, destinado al supermercado ChangoOnline, el cual sea capaz de administrar el ingreso, la cancelación, y la entrega de pedidos.
 Además, se busca conservar toda la información de les clientes registrados y de los productos disponibles. Por último, se deberá controlar el stock de los productos y mantener a les clientes informados frente al estado de sus pedidos online.
-A lo largo del informe mencionarán las cuestiones de diseño respecto del sistema y, posteriormente, se detallarán las dificultades que se presentaron y las soluciones encontradas.
+
+A lo largo del informe mencionaremos las cuestiones de diseño respecto del sistema y, posteriormente, se detallarán las dificultades que se presentaron y las soluciones encontradas.
 
 == Descripción
 
@@ -31,9 +32,11 @@ La dificultad encontrada fue que las validaciones y el retorno eran confusas; no
 Y si eso no sucedía, entonces se consultaban aquellos productos que tengan bajo stock para registrar la solicitud en la tabla.
 
 Por otra parte, se encontró una dificultad con respecto a la implementación de las Transacciones en determinados procedimientos. Dichas transacciones, se aplican sobre operaciones que manipulan valores que suelen ser consultados y modificados reiteradamente (por ejemplo, el `stock_disponible` y `stock_reservado` de los productos), con lo cual la primer idea fue establecer el nivel de aislamiento como serializable.
-Sin embargo, se produjo un problema al corroborar su funcionamiento puesto que habian campos en donde se insertaban valores incorrectos o, en otros casos, no se veían afectados antes ni después de la ejecución. 
-De esta manera, optamos por mantener el nivel de aislamiento predeterminado *READ COMMITTED*.
-	
+Sin embargo, se produjo un problema al corroborar su funcionamiento puesto que habian campos en donde se insertaban valores incorrectos o, en otros casos, no se veían afectados después de la ejecución. 
+De esta manera, optamos por mantener el nivel de aislamiento predeterminado de PostgreSQL `READ COMMITTED` debido a que no era necesario instanciar un nivel mayor de aislamiento que implicaría perder eficiencia y correr el riesgo de causar deadlocks.
+
+También, tuvimos inconvenientes en `selector_de_tablas.go` para mostrar las tablas por consola, dado que se reutilizaban los *strucs* predefinidos que contenian tipos de datos como _int_, _string_ y _float64_. Pero, habian datos en los strucs que no tenían ningún valor almacenado, por ende, eran _null_ y al querer imprimirlos en pantalla, Go no permitía correr la función.
+Para resolver esto, reemplazamos los tipos de datos en los strucs por _sql.NullString_, _sql.NullINt64_ y _sql.NullFloat64_ que verifican no sólo si hay un valor insertado y lo guarda, sino también que pueden tomar valores null en caso contrario.
 
 == Implementación
 // aca va el codigo
@@ -286,4 +289,46 @@ En el main se encuentra el llamado a las demas funciones, mediante un menu en un
 include::main.go[]
 ----
 
+=== NoSQL
+
+.Main
+
+En este archivo .go se definen los Strucs correspondientes para la estructura de datos de la base NoSQL.
+Además, hay una única función `main()` que se encarga de
+
+* Crear la base de datos BoltDB "nissero_albarracin_melo_banchero_db1".
+* Crear los datos hardcodeados en strucs de Cliente, Direccion_entrega, Producto, Pedido.
+* Cargar los clientes, direcciones de entrega, los productos y los pedidos a sus respectivos buckets llamando a `funciones.CrearBucket(db *bolt.DB, bucketName string, key []byte, val []byte)`.
+* Leer los buckets de pedido almacenados llamando a `funciones.LeerBucket(db *bolt.DB, bucketName string, key []byte)`.
+
+[source, go]
+----
+include::bolt-db/bolt-db-main.go[]
+----
+
+.Crear Bucket
+
+Este archivo .go se encarga de crear el bucket con los valores que le llegan por parámetro. Asimismo, a través de una transacción de escritura se genera el bucket en caso de que no exista y, luego, cierra la transacción.
+
+[source, go]
+----
+include::bolt-db/funciones/crear-bucket.go[]
+----
+
+.Leer Bucket
+
+Este archivo .go se encarga de leer el bucket que le llega por parámetro. De esta forma, por medio de una transacción de lectura se ocupa de leer el contenido del respectivo bucket.
+
+[source, go]
+----
+include::bolt-db/funciones/leer-bucket.go[]
+----
+
 == Conclusiones
+
+En conclusión, el proceso de desarrollo del trabajo al principio resultó complejo, debido a que no teniamos mucha experiencia en el manejo tanto del lenguaje Go, como de la interacción entre la base de datos SQL y la aplicación CLI. A pesar de ello, realizamos una estructura y diseño del sistema considerando el orden y la eficiencia del mismo.
+En tal sentido, este trabajo nos proporcionó llevar a la práctica lo visto en las clases previas.
+
+Por un lado, fue interesante combinar lenguaje Go con código SQL e implementar sobre eso el manejo de concurrencia entre transacciones. Por otro lado, si bien el modelo relacional SQL tuvo más desarrollo, pudimos compararlo con un modelo no relacional NoSQL basado en JSON; la base de datos utilizada fue BoltDB. Esto permitió en cierta medida tener conocimiento sobre las diferentes estructuras para almacenar información que se pueden usar, según sea necesario, en nuestro proyecto.
+
+Por último, se recurrió a la herramienta Git la cual facilitó mucho el trabajo en equipo y, también, utilizamos la aplicación Discord para mejorar la comunicación.
