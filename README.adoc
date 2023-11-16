@@ -300,6 +300,7 @@ Además, hay una única función `main()` que se encarga de
 * Crear los datos hardcodeados en strucs de Cliente, Direccion_entrega, Producto, Pedido.
 * Cargar los clientes, direcciones de entrega, los productos y los pedidos a sus respectivos buckets llamando a `funciones.CrearBucket(db *bolt.DB, bucketName string, key []byte, val []byte)`.
 * Leer los buckets de pedido almacenados llamando a `funciones.LeerBucket(db *bolt.DB, bucketName string, key []byte)`.
+* Mostrar por consola el contenido de cada bucket.
 
 [source, go]
 ----
