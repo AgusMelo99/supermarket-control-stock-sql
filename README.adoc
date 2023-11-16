@@ -10,28 +10,30 @@ v1, {docdate}. Docentes Daniel Bertaccini y Hernán Rondelli (COM-02)
 
 El propósito de este trabajo práctico se basa en el desarrollo de un sistema digital, destinado al supermercado ChangoOnline, el cual sea capaz de administrar el ingreso, la cancelación, y la entrega de pedidos.
 Además, se busca conservar toda la información de les clientes registrados y de los productos disponibles. Por último, se deberá controlar el stock de los productos y mantener a les clientes informados frente al estado de sus pedidos online.
+A lo largo del informe mencionarán las cuestiones de diseño respecto del sistema y, posteriormente, se detallarán las dificultades que se presentaron y las soluciones encontradas.
 
 == Descripción
 
-La elaboración del trabajo, al comienzo, se habia complejizado en cuanto a cómo ibamos a abordar la estructura y el diseño tanto del código como de los archivos. Sin embargo, logramos definir un esquema para el cual se encuentre, por un lado, la aplicación CLI en lenguaje Go y, por otro, el contenido SQL encargado de realizar las consultas necesarias.
-Cabe mencionar que, el CLI contiene un *package main* encargado de abrir una única conexión con la base de datos con la finalidad de que se lleven a cabo todas las operaciones establecidas y, además, muestra por consola opciones que permiten ejecutar el código en un orden específico conjunto la visualización del resultado. De esta manera, se encuentran distintos archivos .go que se ocupan de:
-	* Crear la base de datos.
-	* Crear tablas.
-	* Crear las primary key y foreign key según corresponda.
-	* Lectura de los datos .json (decoding) e insertar los registros en las tablas.
+En primer lugar, las cuestiones de estructura y diseño se definieron, por un lado, sobre la aplicación CLI en lenguaje Go y, por otro, en base al contenido SQL encargado de realizar las consultas necesarias.
+En relación a esto, el CLI contiene un *package main* encargado de abrir una única conexión con la base de datos con la finalidad de que se lleven a cabo todas las operaciones establecidas y, además, muestra por consola las opciones que permiten ejecutar el código en un orden específico conjunto la visualización del resultado. De esta manera, se encuentran distintos archivos _.go_ que se ocupan de:
 	
-- Se dificultó al comienzo encarar desde cero el trabajo, puesto no teniamos alguna estructura ya pensada o diseñada para lo que nos teniamos que pretender resolver en el trabajo.
-- Algunas decisiones en relación con el diseño del sistema y en base a los enunciados fueron: 
-	En generar_solicitud_reposicion es un procedimiento que se deberia ejecutar diariamente para hacer una petición de reposición a productos con stock bajo. Para ello, se optó por validar primeramente que el stored procedures no se haya ejecutado antes en el mismo dia, en caso de ser así se retorna false. Luego,  
+	- Crear la base de datos.
+	- Crear tablas.
+	- Crear primary key y foreign key según corresponda.
+	- Lectura de los datos _.json_ (decoding) e insertar los registros en las tablas.
+	- Realizar llamadas a los Stored Procedures y Triggers.
+	- Visualizar en la consola el contenido de tablas y registros.
+	
+Todos estos archivos _.go_ se vinculan con la base de datos para realizar las interacciones requeridas. Asimismo, cada Stored Procedure y Trigger se encuentra separado en un archivo _.sql_ con el objetivo de mantener una organización y abstracción de los distintos puntos a resolver.
 
+En segundo lugar, se presentaron ciertas dificultades durante el desarrollo del trabajo. Una de ellas, surgió al momento de implementar el procedimiento `generar_solicitud_reposicion()`, el mismo debía ejecutarse diariamente para generar peticiones de reposición a productos con bajo stock.
+La dificultad encontrada fue que las validaciones y el retorno eran confusas; no se comprendía si se debian aplicar por cada producto o sobre la tabla en general. Para ello, la solución fue verificar en un principio que no exista alguna solicitud previa registrada con la fecha actual porque eso indicaría que el procedimiento ya se habia generado.
+Y si eso no sucedía, entonces se consultaban aquellos productos que tengan bajo stock para registrar la solicitud en la tabla.
 
-En esta sección pueden incluirse las dificultades que tuvieron, las
-soluciones encontradas, las decisiones que se fueron tomando a lo largo
-del trabajo práctico, y las cuestiones de diseño que consideren
-importantes.
-
-También, se puede incluir una descripción general del programa—cómo
-funciona.
+Por otra parte, se encontró una dificultad con respecto a la implementación de las Transacciones en determinados procedimientos. Dichas transacciones, se aplican sobre operaciones que manipulan valores que suelen ser consultados y modificados reiteradamente (por ejemplo, el `stock_disponible` y `stock_reservado` de los productos), con lo cual la primer idea fue establecer el nivel de aislamiento como serializable.
+Sin embargo, se produjo un problema al corroborar su funcionamiento puesto que habian campos en donde se insertaban valores incorrectos o, en otros casos, no se veían afectados antes ni después de la ejecución. 
+De esta manera, optamos por mantener el nivel de aislamiento predeterminado *READ COMMITTED*.
+	
 
 == Implementación
 // aca va el codigo
@@ -174,6 +176,114 @@ El archivo SQL se encargará de la generación de emails mediante un trigger, el
 [source, sql]
 ----
 include::stored-procedures/enviar_mail.sql[]
+----
+
+=== GO
+.Crear base de datos
+
+En este archivo .go se incluye el código correspondiente a la función CreateDatabase(), el cual crea la base de datos "nissero_albarracin_melo_banchero_db1". En caso de que ya haya sido creada previamente, la borra y la vuelve a crear.
+
+[source, go]
+----
+include::bd/crear_bd.go[]
+----
+
+.Crear tablas
+
+En este archivo .go se incluye el código relacionado con la creación de tablas sobre la base de datos "nissero_albarracin_melo_banchero_db1". Este toma como parámetros una base de datos SQL. A continuación, se nombran las tablas creadas.
+
+* cliente(id_usuarie int, nombre text, apellido text, dni int, fecha_nacimento date, telefono char(12), email text)
+* direccion_entrega(id_usuarie int, id_direccion_entrega int, direccion varchar(60), localidad varchar(30), codigo_postal char(8))
+* tarifa_entrega(codigo_postal_corto char(4), costo decimal(12,2))
+* producto(id_producto int, nombre text, precio_unitario decimal(12,2), stock_disponible int, stock_reservado int, punto_reposicion int, stock_maximo int)
+* pedido(id_pedido int, f_pedido timestamp, fecha_entrega date, hora_entrega_desde time, hora_entrega_hasta time, id_usuarie int, id_direccion_entrega int, monto_total decimal(12,2), costo_envio decimal(12,2), estado char(10))
+* pedido_detalle(id_pedido int, id_producto int, cantidad int, precio_unitario decimal(12,2))
+* reposicion(id_producto int, fecha_solicitud date, cantidad_a_reponer int, fecha_reposicion date, estado char(12))
+* error(id_error int, id_pedido int, f_pedido timestamp, id_usuarie int, id_direccion_entrega int, direccion varchar(60), localidad varchar(30), codigo_postal char(8), id_producto int, cantidad int, operacion char(12), f_error timestamp,motivo varchar(64))
+* entrada_trx_pedido(id_orden int, operacion char(12), id_usuarie int, id_direccion_entrega int, id_pedido int, id_producto int, cantidad int, fecha_hora_entrega timestamp)
+
+[source, go]
+----
+include::bd/crear_tablas.go[]
+----
+
+.Crear primary y foreing keys
+
+En este archivo .go se incluye el código relacionado con la creación de primary y foreign keys mediante las funciones CreatePK() y CreateFK().
+
+[source, go]
+----
+include::bd/crear_pk_fk.go[]
+----
+
+.Borrar primary y foreing keys
+
+En este archivo .go se incluye el código relacionado con la eliminación de primary y foreign keys mediante las funciones DeletePK() y DeleteFK().
+
+[source, go]
+----
+include::bd/borrar_pk_fk.go[]
+----
+
+.Selector de tablas
+
+En este archivo .go se incluye el código relacionado con mostrar por pantalla el contenido de las tablas dentro de la base de datos mediante las siguientes funciones.
+
+* `VerErrores(*sql.DB)` muestra el contenido de la tabla error. Esta función utiliza valores tipo `sql.NullString` y `sql.NullInt64`, ya que esta tabla tiene valores que pueden ser nulos; por ende, no se pueden guardar en los tipos de datos `int` o `string` de Go.
+* `VerEmails(*sql.DB)` muestra el contenido de la tabla emails. Al igual que `VerErrores`, utiliza valores tipo `sql.NullString` y `sql.NullInt64`.
+* `VerReposicion(*sql.DB)` muestra el contenido de la tabla reposicion. Similar a las dos funciones anteriores, también utiliza valores tipo `sql.NullString`.
+* `VerPedidosDetalle(*sql.DB)` muestra el contenido de la tabla pedido_detalle.
+* `VerPedidos(*sql.DB)` muestra el contenido de la tabla pedido. De la misma manera que `VerErrores`, utiliza valores tipo `sql.NullString` y `sql.NullInt64`.
+* `VerProductos(*sql.DB)` muestra el contenido de la tabla producto.
+* `VerClientes(*sql.DB)` muestra el contenido de la tabla cliente.
+
+
+[source, go]
+----
+include::ver_tablas/selector_de_tablas.go[]
+----
+
+.Structs
+
+En este archivo estan contenidos los structs relacionados a las tablas de la base de datos.
+Algunos de estas structs contienen tipo de datos de la biblioteca database/sql (sql.NullString, sql.NullInt64 y sql.NullFloat64), esto se debe a que las columnas relacionadas a estos datos tienen valores que pueden ser null, y los tipos de datos int, string y float64 en Go no pueden tener valores null.
+
+[source, go]
+----
+include::datajson/strucs.go[]
+----
+
+.Malvaviscador
+
+Este archivo se encarga de hacer el unmarshal de los JSON con el contenido de las tablas mediante `Unmalvaviscador()`, y de insertar el contenido en sus respectivas tablas mediante `InsertarClientes(db *sql.DB)`, `InsertarProductos(db *sql.DB)`, `InsertarTarifaEntrega(db *sql.DB)`, `InsertarDireccionesEntrega(db *sql.DB)`.
+
+Además, realiza las transacciones llamando a los stored procedures en la función `InsertarOperaciones(db *sql.DB)`. Aquí, por cada llamado a algún stored procedure que modifique el stock sobre la tabla producto, tendrá una transacción, junto a las sentencias `BEGIN`, `SELECT stored_procedure()`, `SELECT pg_sleep(10)` (para poder probar el paralelismo desde otra terminal), y finalmente `COMMIT` para finalizar con la transacción.
+
+No se cambia el nivel de aislamiento, ya que por defecto, PostgreSQL lo pone como `READ COMMITTED`, lo cual resulta suficiente para evitar condiciones de carrera. Ponerlo como `SERIALIZABLE` implica perder eficiencia y tener la posibilidad de generar deadlocks.
+
+Luego, en `GenerarSolicitudesDeReposicion(db *sql.DB)`, se generan las solicitudes de reposición mediante el llamado a `generar_solicitud_reposicion()`.
+
+[source, go]
+----
+include::datajson/malvaviscador.go[]
+----
+
+.Main
+En el main se encuentra el llamado a las demas funciones, mediante un menu en una CLI, mediante el input del usuario se elijen distintas opciones
+
+* Opcion 1 se crea la base de datos.
+* Opcion 2 se crean las tablas correspondientes.
+* Opcion 3 se crean las PK's y FK's.
+* Opcion 4 se eliminan las PK's y FK's
+* Opcion 5 se agregan los stored procedures.
+* Opcion 6 se hace unmarshall de los json's y se suben los datos a las tablas.
+* Opcion 7 a 13 se muestra el contenido de las tablas
+* Opcion 14 se insertan las operaciones sobre la base de datos.
+* Opcion 15 se generan las solicitudes de reposicion
+
+[source, go]
+----
+include::main.go[]
 ----
 
 == Conclusiones
