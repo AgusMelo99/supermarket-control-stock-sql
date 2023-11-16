@@ -35,11 +35,145 @@ funciona.
 
 == Implementación
 // aca va el codigo
+=== SQL
 
- .Creación del pedido
- [source, sql]
- ----
- include::/stored-procedures/creacion_del_pedido.sql[]
- ----
+.Creación del pedido
+
+El archivo SQL se encarga de crear el stored procedure `creacion_del_pedido(int, int)`, 
+el cual toma como parámetro dos enteros, uno referenciado al id del cliente y 
+otro para la id de la dirección. Este devuelve false si se rechaza la creación del pedido, 
+insertando en la tabla error una fila con la información correspondiente del mismo, 
+y true si se concreta. A continuación, se explicarán las condiciones a cumplirse para cada caso.
+
+.Para que dé falso
+* Si el id del usuario no existe, carga el error ?id de usuarie no válido.
+* Si la id de la dirección de entrega no existe para el cliente, carga el error ?id de dirección no válido.
+* Si el código postal vinculado a la dirección de entrega no tiene una tarifa establecida, carga el error ?dirección de entrega fuera del área de atención.
+
+.Para que dé true
+* Ninguna de las condiciones nombradas anteriormente tiene que cumplirse.
+
+En caso de que se ejecute con éxito, se insertará una fila en la tabla pedido con los datos del cliente, la fecha, la hora del pedido y el costo de envío correspondiente al código postal, dejando su estado como ingresado.
+
+[source, sql]
+----
+include::stored-procedures/creacion_del_pedido.sql[]
+----
+
+.Agregado de producto
+
+El archivo SQL se encarga de crear el stored procedure `agregado_de_producto(int, int, cantidad)`,
+el cual toma como parámetro tres enteros, el primero referencia el id del pedido, el segundo el id del producto,
+y el tercero la cantidad del producto añadido que se agregará al producto. Se encarga de agregar al pedido con el id 
+pasado como parámetro el producto con el id pasado como parámetro la cantidad de veces especificada previamente. Retorna un booleano 
+el cual a continuación se explicarán las condiciones a cumplir para que el valor del mismo sea true o false.
+
+.Para que dé false
+* Si el id del pedido no existe, cargando el error con el mensaje ?id de pedido no válido.
+* Si el pedido no se encuentra en estado 'ingresado', cargando el error con el mensaje ?pedido cerrado.
+* Si el id de producto no existe, cargando el error ?id de producto no válido.
+* Que el producto tenga stock disponible para satisfacer la cantidad solicitada, cargando el error ?stock no disponible para el producto [id_producto].
+
+.Para que dé true
+* Todos los condicionales previamente nombrados no deben cumplirse.
+
+En caso de que se ejecute con éxito, se insertará una fila en la tabla pedido_detalle con los datos del producto. Si el pedido ya tiene el producto, se deberá actualizar la fila correspondiente, sumando la nueva cantidad. 
+En cualquiera de los dos casos, se descuenta dicha cantidad del stock disponible y se suma al stock reservado.
+También se mantiene actualizado el monto total del pedido de forma coherente con el detalle de productos listados.
+
+[source, sql]
+----
+include::stored-procedures/agregado_de_producto.sql[]
+----
+
+.Cierre del pedido
+
+El archivo SQL se encarga de crear el stored procedure `cierre_del_pedido(int, timestamp)`, el cual retorna un booleano
+el cual será true si se carga el pedido con éxito y false en caso contrario. Toma como parámetro el id del pedido y la fecha y hora de entrega.
+A continuación, se explicarán las condiciones a cumplir para que el valor de retorno sea true o false.
+
+.Para que dé false 
+* Que el pedido con el id pasado como parámetro no exista, se cargará el error ?id de pedido no válido.
+* Que el pedido no tenga al menos un producto agregado, se cargará el error ?pedido vacío.
+* Que la fecha y hora de entrega no sea posterior a la actual, se cargará el error ?fecha de entrega no válida.
+
+.Para que dé true
+* Todos los condicionales anteriormente mencionados no deben cumplirse.
+
+En caso de éxito, se actualizará la fila correspondiente en la tabla pedido con la fecha de entrega, y las horas de entrega desde y hasta, dejando su estado como completado.
+
+
+[source, sql]
+----
+include::stored-procedures/cierre_del_pedido.sql[]
+----
+
+.Cancelacion de pedido
+
+El archivo SQL se encarga de crear el stored procedure `cancelacion_de_pedido(int)`, el cual retorna un booleano
+que será true si se cancela el pedido con éxito y false en caso contrario. Este toma como parámetro el id del pedido.
+A continuación, se explicarán las condiciones a cumplir para que el valor de retorno sea true o false.
+
+.Para que dé false
+* El pedido con el id pasado como parámetro no existe, cargará el error ?id de pedido no válido.
+* Que el pedido no se encuentre en estado 'ingresado' o 'completado', cargará el error ?pedido ya entregado o cancelado.
+
+En caso de que se ejecute con éxito, se marcará el estado del pedido como cancelado. Además, se deberá sumar al stock disponible de cada producto la cantidad incluida en el pedido cancelado, y descontarla del stock reservado.
+
+[source, sql]
+----
+include::stored-procedures/cancelacion_de_pedido.sql[]
+----
+
+.Entrega de pedido
+
+El archivo SQL se encarga de crear el stored procedure `entrega_pedido(int)`, el cual retorna un booleano
+que será true si se marca el pedido como entregado o false en caso contrario. 
+Toma como parámetro un id referenciando el id del pedido. 
+A continuación, se explicarán las condiciones a cumplir para que el valor de retorno sea true o false.
+
+.Para que dé false
+* El pedido con el id pasado como parámetro no existe, cargará el error ?id de pedido no válido.
+* Que el estado del pedido no se encuentre en 'completado', cargará el error ?pedido sin cerrar o ya entregado.
+
+.Para que dé true
+* Ninguna de las condiciones anteriores se cumplan.
+
+Si se ejecuta con éxito, se marcará el estado del pedido como entregado. Además, se restará el stock reservado de cada producto la cantidad incluida en el pedido entregado.
+
+
+[source, sql]
+----
+include::stored-procedures/entrega_pedido.sql[]
+----
+
+.Generación de solicitudes de reposición
+
+El archivo SQL se encargará de generar las solicitudes de reabastecimiento de los productos que tengan bajo stock mediante un stored procedure.
+Para ello, se inserta una fila en la tabla reposición por cada producto cuya suma del stock disponible y del reservado sea menor o igual
+al punto de reposición. La cantidad a reponer será la que permita llegar al stock máximo del producto y el estado de la solicitud se grabará como pendiente.
+La fecha de solicitud corresponderá a la fecha actual.
+El procedimiento retornará false en caso de que ya exista previamente, *aunque sea una solicitud de reabastecimiento con la fecha igual a la actual*, 
+esto se basa en el razonamiento de que si existe aunque sea una solicitud con la fecha igual a la actual, el procedimiento fue ejecutado previamente en el día de la fecha.
+En caso contrario, retorna true.
+
+[source, sql]
+----
+include::stored-procedures/generar_solicitud_reposicion.sql[]
+----
+
+.Envio de emails a clientes
+
+El archivo SQL se encargará de la generación de emails mediante un trigger, el cual se ejecuta cada vez que:
+
+* Cada vez que se haga efectivo el cierre de un pedido, se genera un email con el asunto 'Pedido aceptado', e indicando en el cuerpo del email los datos del pedido y el detalle de los productos solicitados.
+* Cada vez que un pedido sea cancelado, se genera un email con el asunto 'Pedido cancelado', e indicando en el cuerpo del email los datos del pedido y el detalle de productos.
+* Cada vez que un pedido sea entregado, se genera automáticamente un email con el asunto 'Pedido entregado', e indicando en el cuerpo del email los datos del pedido y el detalle de productos.
+* Y, por último, un email con el asunto 'Encuesta de satisfacción', incluyendo en el cuerpo del email un texto breve que lo invite a completar una encuesta.
+
+[source, sql]
+----
+include::stored-procedures/enviar_mail.sql[]
+----
 
 == Conclusiones
