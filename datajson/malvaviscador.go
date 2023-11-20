@@ -208,7 +208,7 @@ func Unmalvaviscador(){
 	fmt.Println("tarifas_entrega.json leido correctamente \n")
 	//fmt.Printf("%v\n", tarifas_entrega)
 	
-	jsonFile, err = ioutil.ReadFile("datajson/trx_pedido.json")
+	jsonFile, err = ioutil.ReadFile("datajson/trx_pedido_prueba.json")
 	if err != nil {
         log.Fatalf("Error al leer el archivo JSON: %s", err)
     }
